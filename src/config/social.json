@@ -19,6 +19,11 @@
       "name": "github",
       "icon": "FaGithub",
       "link": "https://github.com/themefisher/shopplate"
+    },
+    {
+      "name": "instagram",
+      "icon": "FaInstagram",
+      "link": "https://www.instagram.com/themefisher/"
     }
   ]
 }

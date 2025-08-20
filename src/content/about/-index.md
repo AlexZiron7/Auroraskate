@@ -1,84 +1,85 @@
 ---
-title: "About Us"
-meta_title: "About"
+title: "Nosotros"
+meta_title: "Nosotros"
 description: ""
 image: ""
 draft: false
 
 #About Us
 about_us:
-  - title: "Our Company"
-    image: "/images/aboutUs.png"
-    content: "Welcome to **Shopplate** where brilliance meets innovation. We take pride in being your ultimate destination for exquisite lighting solutions that illuminate spaces and lives alike. With a passion for creating luminous experiences, we curate a diverse range of cutting-edge light fixtures designed to elevate any environment. Our commitment to quality craftsmanship and a keen eye for aesthetic appeal ensures that each product we offer is not just a source of light,<br/><br/> but a work of art in its own right. Whether you're seeking ambient elegance for your home or functional brilliance for a commercial space, [Your Company Name] is dedicated to bringing your vision to light. Explore our collection and let your surroundings shine with a touch of our radiant expertise. Elevate your space, embrace the light, only with **Shopplate**."
+  - title: "Nuestra escuela"
+    image: "/images/aboutUs1.png"
+    content: "Bienvenido a **[Nombre de la Escuela de Skateboarding]**, donde la pasión se encuentra con la innovación. Nos enorgullece ser tu destino final para aprender y dominar el arte del skateboarding. Con una pasión por crear experiencias inolvidables, ofrecemos una diversa gama de programas de entrenamiento diseñados para elevar tus habilidades a cualquier nivel. Nuestro compromiso con una enseñanza de calidad y un enfoque en la seguridad asegura que cada clase que ofrecemos no es solo un curso, sino una oportunidad para crecer y superarte. <br/><br/> Ya sea que busques dominar los fundamentos o perfeccionar trucos avanzados, **[Nombre de la Escuela de Skateboarding]** se dedica a hacer que tu visión se haga realidad. Explora nuestras clases y deja que tu habilidad brille con un toque de nuestra experiencia. Eleva tu práctica, abraza el skate, solo con **[Nombre de la Escuela de Skateboarding]**."
 
-  - title: "Who We Are ?"
-    image: "/images/aboutUs.png"
-    content: "At **Shopplate** we illuminate your world with a curated collection of exceptional lighting solutions. Established with a passion for transforming spaces and creating ambiance, we stand as a beacon of quality and style in the realm of lighting. With a keen eye for design and a commitment to sourcing the finest materials, we pride ourselves on offering a diverse range of work that not only brighten spaces but also elevate aesthetics. <br/><br/> Committed to delivering excellence, we prioritize customer satisfaction and provide expert guidance to help you find the perfect lighting solution for any setting. Welcome to **Shopplate** where light meets inspiration. Illuminate your world today!"
+  - title: "¿Quienes somos?"
+    image: "/images/aboutUs2.png"
+    content: "En **[Nombre de la Escuela de Skateboarding]**, impulsamos tu mundo con una colección de soluciones de aprendizaje de skate excepcionales. Fundada con la pasión de transformar habilidades y construir una comunidad, somos un faro de calidad y estilo en el ámbito del skateboarding. Con un ojo agudo para el desarrollo de habilidades y el compromiso de utilizar el mejor equipo de seguridad, nos enorgullece ofrecer una amplia gama de clases que no solo te ayudan a aprender, sino que también te inspiran a explorar la creatividad en el skate. <br/><br/> Comprometidos con la excelencia, priorizamos la satisfacción de nuestros estudiantes y proporcionamos orientación experta para ayudarte a encontrar el programa de entrenamiento perfecto para cualquier nivel. ¡Bienvenido a **[Nombre de la Escuela de Skateboarding]** donde la habilidad se encuentra con la inspiración. ¡Aumenta tu nivel hoy!"
 
 # Frequently Asked Questions
-faq_section_title: "Frequently Asked Questions"
-faq_section_subtitle: "Our expertly crafted FAQ guide provides valuable insights on selecting the perfect table lamp to complement your decor and meet your specific lighting needs."
+faq_section_title: "Preguntas Frecuentes"
+faq_section_subtitle: "Nuestra guía de preguntas frecuentes elaborada por expertos ofrece información valiosa sobre cómo seleccionar el programa de entrenamiento perfecto para complementar tus objetivos y satisfacer tus necesidades específicas de aprendizaje."
 button:
   enable: true
-  label: "Contact Us"
+  label: "Contacto"
   link: "/contact"
 faqs:
-  - title: "Can I customize lamps for client projects?"
-    content: "Yes, our platform allows customization for client projects, ensuring unique and tailored solutions. Yes, our platform allows customization for client projects, ensuring unique and tailored solutions."
+  - title: "¿Ofrecen clases para principiantes completos?"
+    content: "Sí, nuestra plataforma ofrece clases para principiantes, garantizando una base sólida y un entorno de aprendizaje seguro. Sí, nuestra plataforma ofrece clases para principiantes, garantizando una base sólida y un entorno de aprendizaje seguro."
 
-  - title: "Where are your lamps crafted?"
-    content: "Our lamps are meticulously crafted, combining quality materials and skilled workmanship to deliver exceptional products. Our lamps are meticulously crafted, combining quality materials and skilled workmanship to deliver exceptional products."
+  - title: "¿Dónde se imparten las clases?"
+    content: "Nuestras clases se imparten en ubicaciones seguras y designadas para skateparks, diseñadas para maximizar el aprendizaje y minimizar los riesgos. Nuestras clases se imparten en ubicaciones seguras y designadas para skateparks, diseñadas para maximizar el aprendizaje y minimizar los riesgos."
 
-  - title: "What's included in the 'free updates' policy?"
-    content: "Free updates encompass enhancements to lamp designs and features, ensuring your collection stays current and appealing. Free updates encompass enhancements to lamp designs and features, ensuring your collection stays current and appealing"
+  - title: "¿Qué está incluido en las lecciones?"
+    content: "Las lecciones incluyen entrenamiento personalizado, uso de equipo de seguridad (cascos, protectores) y acceso a nuestras instalaciones de skate. Las lecciones incluyen entrenamiento personalizado, uso de equipo de seguridad (cascos, protectores) y acceso a nuestras instalaciones de skate."
 
-  - title: "Can I use your lamps for open source projects?"
-    content: "Certainly! Our lamps are open for integration into various projects, fostering creativity and innovation. Certainly! Our lamps are open for integration into various projects, fostering creativity and innovation."
+  - title: "¿Puedo usar mi propio equipo?"
+    content: "¡Por supuesto! Fomentamos el uso de tu propio equipo. Nuestros instructores pueden ofrecerte consejos sobre cómo mejorar tu configuración si lo deseas. ¡Por supuesto! Fomentamos el uso de tu propio equipo. Nuestros instructores pueden ofrecerte consejos sobre cómo mejorar tu configuración si lo deseas."
 
-  - title: "Can I retail themes featuring your lamps?"
-    content: "Absolutely! You can sell themes created with our lamps, providing stylish solutions for diverse design needs. Absolutely! You can sell themes created with our lamps, providing stylish solutions for diverse design needs."
+  - title: "¿Hay clases de grupo o solo individuales?"
+    content: "Ofrecemos tanto clases grupales para fomentar la camaradería como lecciones individuales personalizadas. Ofrecemos tanto clases grupales para fomentar la camaradería como lecciones individuales personalizadas."
+
 
 # Testimonials
 testimonials_section_enable: true
-testimonials_section_title: "What Our Client Says"
+testimonials_section_title: "Lo que dicen nuestros estudiantes"
 testimonials:
-  - name: "Ava Sinclair"
-    designation: "Lead Frontend Architect"
+  - name: "Leo Sinclair"
+    designation: "Estudiante Avanzado"
     avatar: "/images/avatar-sm.png"
-    content: "Shopplate has been a game-changer for our e-commerce setup. This Astro-Shopify boilerplate blends the speed and flexibility of Astro with the powerful e-commerce capabilities of Shopify, giving us the perfect foundation for a high-performance, modern storefront. Setup was smooth, and it’s optimized for seamless integration with Shopify’s API, so we were able to get our site up and running quickly without compromising on customizations or functionality. Shopplate’s clean codebase and scalability make it an ideal solution for any team looking to leverage Astro’s benefits in an e-commerce context. Highly recommended for anyone looking to streamline their Shopify store with the speed of Astro!"
+    content: "La escuela de skate ha sido un cambio total para mis habilidades. Los instructores son geniales y el enfoque en la seguridad me dio la confianza para intentar trucos nuevos. Las clases están bien estructuradas y el ambiente de la comunidad es muy acogedor. ¡Muy recomendable para cualquier persona que quiera aprender a patinar o mejorar sus habilidades!"
 
-  - name: "Jordan Patel"
-    designation: "E-commerce Solutions Strategist"
+  - name: "Jordan Rivas"
+    designation: "Principiante Entusiasta"
     avatar: "/images/avatar-sm.png"
-    content: "Shopplate has been a game-changer for our e-commerce setup. This Astro-Shopify boilerplate blends the speed and flexibility of Astro with the powerful e-commerce capabilities of Shopify, giving us the perfect foundation for a high-performance, modern storefront. Setup was smooth, and it’s optimized for seamless integration with Shopify’s API, so we were able to get our site up and running quickly without compromising on customizations or functionality. Shopplate’s clean codebase and scalability make it an ideal solution for any team looking to leverage Astro’s benefits in an e-commerce context. Highly recommended for anyone looking to streamline their Shopify store with the speed of Astro!"
+    content: "Empecé sin saber nada y ahora me siento mucho más seguro en la tabla. El personal fue muy paciente y me ayudó a dominar los fundamentos. ¡Ya estoy planeando inscribirme en el próximo nivel!"
 
-  - name: "Lena Brooks"
-    designation: "Digital Experience Specialist"
+  - name: "Sofía Brooks"
+    designation: "Padre de Estudiante"
     avatar: "/images/avatar-sm.png"
-    content: "Shopplate has been a game-changer for our e-commerce setup. This Astro-Shopify boilerplate blends the speed and flexibility of Astro with the powerful e-commerce capabilities of Shopify, giving us the perfect foundation for a high-performance, modern storefront. Setup was smooth, and it’s optimized for seamless integration with Shopify’s API, so we were able to get our site up and running quickly without compromising on customizations or functionality. Shopplate’s clean codebase and scalability make it an ideal solution for any team looking to leverage Astro’s benefits in an e-commerce context. Highly recommended for anyone looking to streamline their Shopify store with the speed of Astro!"
+    content: "Estoy muy impresionado con el profesionalismo de la escuela. Mi hijo ha aprendido tanto en solo unas pocas semanas y los instructores se preocupan realmente por el progreso de cada estudiante. Me siento tranquilo sabiendo que está en un ambiente seguro y de apoyo."
 
-  - name: "Marvin McKinney"
-    designation: "Web Designer"
+  - name: "Mateo Ortiz"
+    designation: "Skater local"
     avatar: "/images/avatar-sm.png"
-    content: "Shopplate has been a game-changer for our e-commerce setup. This Astro-Shopify boilerplate blends the speed and flexibility of Astro with the powerful e-commerce capabilities of Shopify, giving us the perfect foundation for a high-performance, modern storefront. Setup was smooth, and it’s optimized for seamless integration with Shopify’s API, so we were able to get our site up and running quickly without compromising on customizations or functionality. Shopplate’s clean codebase and scalability make it an ideal solution for any team looking to leverage Astro’s benefits in an e-commerce context. Highly recommended for anyone looking to streamline their Shopify store with the speed of Astro!"
+    content: "Solía patinar solo, pero unirme a esta escuela me ayudó a conectar con otros skaters y aprender nuevas técnicas. La comunidad es increíble y el equipo de instructores es de primera. ¡Mi nivel de patinaje ha mejorado significativamente!"
 
 # Our Staff
 staff_section_enable: true
 staff:
-  - name: "Marvin McKinney"
-    designation: "Web Designer"
+  - name: "Marvin Solis"
+    designation: "Instructor Principal"
     avatar: "/images/staff/staff.png"
 
-  - name: "Noah Anderson"
-    designation: "Java Engineer"
+  - name: "Noah Perez"
+    designation: "Instructor de Nivel Básico"
     avatar: "/images/staff/staff.png"
 
-  - name: "Olivia Harper"
-    designation: "UI Designer"
+  - name: "Olivia Herrera"
+    designation: "Instructora de Nivel Intermedio"
     avatar: "/images/staff/staff.png"
 
-  - name: "Benjamin Clarke"
-    designation: "Product Marketer"
+  - name: "Benjamin Reyes"
+    designation: "Asistente de Instructor"
     avatar: "/images/staff/staff.png"
 ---
 

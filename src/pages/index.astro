@@ -25,7 +25,25 @@ const { products: featuredProducts } = await getCollectionProducts({
 ---
 
 <Base>
-  <section>
+<section class="w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
+  <div class="container h-full">
+    <div class="bg-gradient rounded-md flex justify-center items-center w-full h-full p-0">
+      <video
+        src="/video/Video1.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="w-full h-full object-cover rounded-xl shadow-lg"
+        poster=""
+      >
+        Tu navegador no soporta el video.
+      </video>
+    </div>
+  </div>
+</section>
+
+    <section>
     <div class="container">
       <div class="bg-gradient py-10 rounded-md">
         <HeroSlider products={heroProducts} client:load />
@@ -37,7 +55,7 @@ const { products: featuredProducts } = await getCollectionProducts({
   <section class="section">
     <div class="container">
       <div class="text-center mb-6 md:mb-14">
-        <h2>Collections</h2>
+        <h2>Paquetes</h2>
       </div>
       <CollectionsSlider client:load collections={collectionProducts} />
     </div>
@@ -47,8 +65,8 @@ const { products: featuredProducts } = await getCollectionProducts({
   <section>
     <div class="container">
       <div class="text-center mb-6 md:mb-14">
-        <h2 class="mb-2">Featured Products</h2>
-        <p class="md:h5">Explore Today's Featured Picks!</p>
+        <h2 class="mb-2">Destacados</h2>
+        <p class="md:h5">¡Explora las selecciones destacadas de hoy!</p>
       </div>
       <FeaturedProducts products={featuredProducts} />
     </div>

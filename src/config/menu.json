@@ -1,24 +1,24 @@
 {
   "main": [
     {
-      "name": "Home",
+      "name": "Inicio",
       "url": "/"
     },
     {
-      "name": "Products",
+      "name": "Cursos",
       "url": "/products"
     },
     {
-      "name": "Pages",
+      "name": "Paginas",
       "url": "",
       "hasChildren": true,
       "children": [
         {
-          "name": "About",
+          "name": "Nosotros",
           "url": "/about"
         },
         {
-          "name": "Contact",
+          "name": "Contacto",
           "url": "/contact"
         },
         {
@@ -28,21 +28,21 @@
       ]
     },
     {
-      "name": "Contact",
+      "name": "Contacto",
       "url": "/contact"
     }
   ],
   "footer": [
     {
-      "name": "About",
+      "name": "Nosotros",
       "url": "/about"
     },
     {
-      "name": "Products",
+      "name": "Cursos",
       "url": "/products"
     },
     {
-      "name": "Contact",
+      "name": "Contacto",
       "url": "/contact"
     }
   ],
