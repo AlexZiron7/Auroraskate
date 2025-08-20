@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 align=center>Shopplate | AstroJs + Shopify + Tailwind CSS + TypeScript Starter and Boilerplate</h1>
 
 <p align=center>A free, production-ready astro.js template powered by Tailwind CSS and TypeScript, specifically designed for Shopify. Utilizes the Shopify Storefront API through GraphQL and providing everything you need to jumpstart your Astro project and save valuable time.</p>
@@ -172,3 +173,7 @@ Copyright (c) 2024 - Present, Designed & Developed by [Themefisher](https://them
 ## 💻 Need Custom Development Services?
 
 If you need a custom theme, theme customization, or complete website development services from scratch you can [Hire Us](https://themefisher.com/).
+=======
+# Auroraskate
+Muestra de proyecto
+>>>>>>> 323e3a4 (Initial commit)
