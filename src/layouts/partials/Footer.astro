@@ -1,72 +1,73 @@
 ---
-import Logo from "@/components/Logo.astro";
-import config from "@/config/config.json";
+import Logo from "@/layouts/components/Logo.astro";
 import menu from "@/config/menu.json";
 import social from "@/config/social.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
+import config from "@/config/config.json";
 import { markdownify } from "@/lib/utils/textConverter";
+
 const { copyright } = config.params;
 
-export interface ISocial {
-  name: string;
-  icon: string;
-  link: string;
+const allowed = new Map([
+  ["instagram", "instagram"],
+  ["facebook", "facebook"],
+  ["tiktok", "tiktok"],
+  ["youtube", "youtube"],
+]);
+
+function resolveIcon(s: any) {
+  const name = (s.name || "").toLowerCase();
+  const slug = allowed.get(name);
+  let src = s.iconUrl || s.icon;
+
+  if (src && /^https?:\/\//.test(src)) return src;
+  if (src && /\.(png|svg|jpg|jpeg|webp)$/i.test(src))
+    return src.startsWith("/") ? src : `/icons/${src}`;
+  if (slug) return `/icons/${slug}.png`;
+  return null;
 }
+
+const socials = (social?.main ?? [])
+  .map((s: any) => {
+    const iconSrc = resolveIcon(s);
+    return iconSrc ? { name: s.name, href: s.link, src: iconSrc } : null;
+  })
+  .filter(Boolean);
 ---
 
-<footer class="bg-light dark:bg-darkmode-light">
+<footer class="bg-light dark:bg-darkmode-light mt-16 border-t border-border dark:border-darkmode-border">
   <div class="container">
-    <div
-      class="flex flex-col md:flex-row justify-between items-center py-10 md:pt-20 md:pb-14"
-    >
-      <Logo />
+    <div class="py-10 grid grid-cols-1 md:grid-cols-3 items-center gap-8">
+      <div class="justify-self-start"><Logo /></div>
 
-      <ul class="flex gap-x-4 lg:gap-x-10 my-3">
-        {
-          menu.footer.map((menu) => (
-            <li class="footer-link">
-              <a href={menu.url}>{menu.name}</a>
-            </li>
-          ))
-        }
-      </ul>
+      <nav class="justify-self-center">
+        <ul class="flex items-center gap-8">
+          {(menu.footer ?? []).map((m) => (
+            <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+          ))}
+        </ul>
+      </nav>
 
-      {/* social share */}
-      <ul class="social-icons social-icons-footer">
-        {
-          social?.main.map((social: ISocial) => (
-            <li>
-              <a
-                aria-label={social.name}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-              >
-                <span class="sr-only">{social.name}</span>
-                <DynamicIcon className="inline-block" icon={social.icon} />
-              </a>
-            </li>
-          ))
-        }
+      <ul class="justify-self-end flex items-center gap-3">
+        {socials.map((s) => (
+          <li>
+            <a href={s.href} aria-label={s.name} target="_blank" rel="noopener noreferrer nofollow"
+               class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border dark:border-darkmode-border hover:bg-black/5 dark:hover:bg-white/10">
+              <img src={s.src} alt="" width="20" height="20" loading="lazy" />
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
 
-    <div class="border-t border-border py-5 dark:border-darkmode-border">
-      <div
-        class="flex flex-col md:flex-row gap-y-2 justify-between items-center text-text-light dark:text-darkmode-text-light"
-      >
-        <ul class="flex gap-x-4">
-          {
-            menu.footerCopyright.map((menu) => (
-              <li class="footer-link">
-                <a href={menu.url}>{menu.name}</a>
-              </li>
-            ))
-          }
-        </ul>
+    <hr class="border-border dark:border-darkmode-border" />
 
-        <p class="text-sm font-light" set:html={markdownify(copyright)} />
-      </div>
+    <div class="py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-text-light dark:text-darkmode-text-light">
+      <ul class="flex items-center gap-6">
+        {(menu.footerCopyright ?? []).map((m) => (
+          <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+        ))}
+      </ul>
+      <p class="text-sm" set:html={markdownify(copyright)} />
     </div>
   </div>
 </footer>
