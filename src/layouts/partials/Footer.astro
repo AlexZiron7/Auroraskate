@@ -1,70 +1,54 @@
 ---
-import Logo from "@/components/Logo.astro";
+import Logo from "@/layouts/components/Logo.astro";
 import config from "@/config/config.json";
 import menu from "@/config/menu.json";
 import social from "@/config/social.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
 import { markdownify } from "@/lib/utils/textConverter";
 const { copyright } = config.params;
 
-export interface ISocial {
-  name: string;
-  icon: string;
-  link: string;
-}
+// resolver ids simples -> iconify ids
+const iconMap: Record<string, string> = {
+  instagram: "tabler:brand-instagram",
+  facebook: "tabler:brand-facebook",
+  twitter: "tabler:brand-twitter",
+  tiktok: "tabler:brand-tiktok",
+  youtube: "tabler:brand-youtube",
+};
+const resolveIcon = (id?: string) =>
+  id?.includes(":") ? id! : (iconMap[id?.toLowerCase() || ""] || "tabler:alert-circle");
 ---
 
 <footer class="bg-light dark:bg-darkmode-light">
   <div class="container">
-    <div
-      class="flex flex-col md:flex-row justify-between items-center py-10 md:pt-20 md:pb-14"
-    >
+    <div class="flex flex-col md:flex-row justify-between items-center py-10 md:pt-20 md:pb-14">
       <Logo />
 
       <ul class="flex gap-x-4 lg:gap-x-10 my-3">
-        {
-          menu.footer.map((menu) => (
-            <li class="footer-link">
-              <a href={menu.url}>{menu.name}</a>
-            </li>
-          ))
-        }
+        {(menu.footer ?? []).map((m) => (
+          <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+        ))}
       </ul>
 
-      {/* social share */}
-      <ul class="social-icons social-icons-footer">
-        {
-          social?.main.map((social: ISocial) => (
-            <li>
-              <a
-                aria-label={social.name}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-              >
-                <span class="sr-only">{social.name}</span>
-                <DynamicIcon className="inline-block" icon={social.icon} />
-              </a>
-            </li>
-          ))
-        }
+      <!-- Redes abajo a la derecha -->
+      <ul class="flex items-center gap-3">
+        {(social?.main ?? []).map((s) => (
+          <li>
+            <a aria-label={s.name} href={s.link} target="_blank" rel="noopener noreferrer nofollow"
+               class="inline-flex items-center justify-center rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10 transition" title={s.name}>
+              <iconify-icon icon={resolveIcon(s.icon)} width="18" height="18"></iconify-icon>
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
 
     <div class="border-t border-border py-5 dark:border-darkmode-border">
-      <div
-        class="flex flex-col md:flex-row gap-y-2 justify-between items-center text-text-light dark:text-darkmode-text-light"
-      >
+      <div class="flex flex-col md:flex-row gap-y-2 justify-between items-center text-text-light dark:text-darkmode-text-light">
         <ul class="flex gap-x-4">
-          {
-            menu.footerCopyright.map((menu) => (
-              <li class="footer-link">
-                <a href={menu.url}>{menu.name}</a>
-              </li>
-            ))
-          }
+          {(menu.footerCopyright ?? []).map((m) => (
+            <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+          ))}
         </ul>
-
         <p class="text-sm font-light" set:html={markdownify(copyright)} />
       </div>
     </div>

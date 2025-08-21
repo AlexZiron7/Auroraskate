@@ -1,59 +1,16 @@
 {
   "main": [
-    {
-      "name": "Inicio",
-      "url": "/"
-    },
-    {
-      "name": "Cursos",
-      "url": "/products"
-    },
-    {
-      "name": "Paginas",
-      "url": "",
-      "hasChildren": true,
-      "children": [
-        {
-          "name": "Nosotros",
-          "url": "/about"
-        },
-        {
-          "name": "Contacto",
-          "url": "/contact"
-        },
-        {
-          "name": "404 Page",
-          "url": "/404"
-        }
-      ]
-    },
-    {
-      "name": "Contacto",
-      "url": "/contact"
-    }
+    { "name": "Inicio", "url": "/" },
+    { "name": "Cursos", "url": "/products" },
+    { "name": "Contacto", "url": "/contact" }
   ],
   "footer": [
-    {
-      "name": "Nosotros",
-      "url": "/about"
-    },
-    {
-      "name": "Cursos",
-      "url": "/products"
-    },
-    {
-      "name": "Contacto",
-      "url": "/contact"
-    }
+    { "name": "Inicio", "url": "/" },
+    { "name": "Cursos", "url": "/products" },
+    { "name": "Contacto", "url": "/contact" }
   ],
   "footerCopyright": [
-    {
-      "name": "Privacy & Policy",
-      "url": "/privacy-policy"
-    },
-    {
-      "name": "Terms of Service",
-      "url": "/terms-services"
-    }
+    { "name": "Privacy & Policy", "url": "/privacy-policy" },
+    { "name": "Terms of Service", "url": "/terms-services" }
   ]
 }

@@ -44,6 +44,8 @@ const { title, meta_title, description, image, noindex, canonical } =
 <html lang="en">
   <head>
     <!-- favicon -->
+     <script src="https://unpkg.com/@iconify-icon/web@2.1.0/dist/iconify-icon.min.js" defer></script>
+
     <link rel="shortcut icon" href={config.site.favicon} />
     <!-- theme meta -->
     <meta name="theme-name" content="shopplate" />
@@ -110,7 +112,8 @@ const { title, meta_title, description, image, noindex, canonical } =
       )}
     />
 
-    <ClientRouter />
+
+
 
     <!-- author from config.json -->
     <meta name="author" content={config.metadata.meta_author} />

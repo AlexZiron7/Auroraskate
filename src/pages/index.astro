@@ -1,76 +1,117 @@
 ---
-import FeaturedProducts from "@/components/FeaturedProducts.astro";
-import config from "@/config/config.json";
-import CollectionsSlider from "@/functional-components/CollectionsSlider";
 import Base from "@/layouts/Base.astro";
-import { getCollectionProducts, getCollections } from "@/lib/shopify";
-import CallToAction from "@/partials/CallToAction.astro";
-import HeroSlider from "src/layouts/functional-components/HeroSlider";
-
-const { collections } = config.shopify;
-
-// Fetch slider images for the HeroSlider
-const sliderImages = await getCollectionProducts({
-  collection: collections.hero_slider,
-});
-const heroProducts = sliderImages.products;
-
-const collectionProducts = await getCollections();
-
-// Fetch featured products
-const { products: featuredProducts } = await getCollectionProducts({
-  collection: collections.featured_products,
-  reverse: false,
-});
 ---
 
-<Base>
-<section class="w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
-  <div class="container h-full">
-    <div class="bg-gradient rounded-md flex justify-center items-center w-full h-full p-0">
-      <video
-        src="/video/Video1.mp4"
-        autoplay
-        loop
-        muted
-        playsinline
-        class="w-full h-full object-cover rounded-xl shadow-lg"
-        poster=""
-      >
-        Tu navegador no soporta el video.
-      </video>
-    </div>
-  </div>
-</section>
+<Base title="obba shop — Home">
+  <head>
+    <!-- Prefetch de la ruta de cursos (products) y preconnect a Shopify CDN (si aplica en tu tema) -->
+  <link rel="prefetch" href="/products" />
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin />
 
-    <section>
-    <div class="container">
-      <div class="bg-gradient py-10 rounded-md">
-        <HeroSlider products={heroProducts} client:load />
+  </head>
+
+  {/* HERO video */}
+  <section class="relative min-h-screen flex items-center pt-16 text-white">
+    <video autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover -z-10">
+      <source src="/fondo.mp4" type="video/mp4" />
+    </video>
+    <div class="absolute inset-0 bg-black/55 -z-10"></div>
+    <div class="relative z-10 mx-auto w-full max-w-5xl px-4 text-center">
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight tracking-tight">
+        Aprende Skateboarding con los mejores cursos online
+      </h1>
+      <p class="mt-5 max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-white/85">
+        Programas en vídeo, revisiones personalizadas y una comunidad activa para llevar tus trucos al siguiente nivel.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="/products" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white text-black font-semibold px-6 py-3 hover:opacity-90 transition">
+          Ver Cursos
+        </a>
+        <a href="/contact#discord" class="inline-flex items-center justify-center rounded-xl border border-white/40 text-white font-semibold px-6 py-3 hover:bg-white/10 transition">
+          Comunidad
+        </a>
       </div>
     </div>
   </section>
 
-  {/* category section */}
-  <section class="section">
-    <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2>Paquetes</h2>
+
+
+  {/* BUNDLES grid */}
+  <section class="bg-white py-20">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-8">Bundles destacados</h2>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/img/bundle1.png" alt="Ultimate Bundle" class="w-full h-64 object-cover" />
+          <div class="p-5">
+            <h3 class="font-semibold">Ultimate Bundle</h3>
+            <p class="text-sm text-gray-600 mt-1">Todo lo que necesitas para acelerar tu progreso.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/img/bundle2.png" alt="Balance Blueprint Bundle" class="w-full h-64 object-cover" />
+          <div class="p-5">
+            <h3 class="font-semibold">Balance Blueprint Bundle</h3>
+            <p class="text-sm text-gray-600 mt-1">Mejora tu equilibrio y control de tabla.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/img/bundle3.png" alt="Art of Popping Bundle" class="w-full h-64 object-cover" />
+          <div class="p-5">
+            <h3 class="font-semibold">Art of Popping Bundle</h3>
+            <p class="text-sm text-gray-600 mt-1">Domina pops, timing y estilo.</p>
+          </div>
+        </div>
       </div>
-      <CollectionsSlider client:load collections={collectionProducts} />
     </div>
   </section>
 
-  {/* Featured Products section */}
-  <section>
-    <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2 class="mb-2">Destacados</h2>
-        <p class="md:h5">¡Explora las selecciones destacadas de hoy!</p>
+  {/* TWO-COLUMN: About me / Join the team */}
+  <section class="bg-white py-16">
+    <div class="mx-auto max-w-6xl px-4 grid gap-12 lg:grid-cols-2">
+      <div>
+        <img src="/img/curso1.png" class="w-full rounded-2xl object-cover" alt="Acerca de mí" />
+        <div class="mt-6">
+          <h3 class="text-3xl font-extrabold">ACERCA DE MÍ</h3>
+          <p class="mt-2 text-gray-600">Conoce quién está detrás de obba shop y cómo te ayudaremos a progresar.</p>
+          <a href="/contact" class="mt-4 inline-flex items-center rounded-full bg-emerald-600 text-white px-5 py-2 hover:bg-emerald-700">Contactar</a>
+        </div>
       </div>
-      <FeaturedProducts products={featuredProducts} />
+      <div>
+        <img src="/img/curso2.png" class="w-full rounded-2xl object-cover" alt="Join the team" />
+        <div class="mt-6">
+          <h3 class="text-3xl font-extrabold">JOIN THE TEAM</h3>
+          <p class="mt-2 text-gray-600">Únete a una comunidad de skaters y recibe feedback semanal.</p>
+          <a href="/contact" class="mt-4 inline-flex items-center rounded-full bg-emerald-600 text-white px-5 py-2 hover:bg-emerald-700">Learn More</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <CallToAction />
+  {/* WHY CHOOSE */}
+  <section id="beneficios" class="bg-white text-gray-900 py-20">
+    <div class="mx-auto max-w-6xl px-4 text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold">¿Por qué elegir obba shop?</h2>
+      <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
+        La forma más completa de aprender skate: práctica, teoría y comunidad en un solo lugar.
+      </p>
+      <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🛹</div>
+          <h3 class="font-semibold text-lg">Aprendizaje progresivo</h3>
+          <p class="mt-2 text-gray-600 text-sm">Cursos para cada nivel, desde tu primera tabla hasta trucos de competición.</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🎥</div>
+          <h3 class="font-semibold text-lg">Feedback en vídeo</h3>
+          <p class="mt-2 text-gray-600 text-sm">Sube tus sesiones y recibe análisis de expertos.</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🌍</div>
+          <h3 class="font-semibold text-lg">Comunidad global</h3>
+          <p class="mt-2 text-gray-600 text-sm">Conecta con riders y comparte progreso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>

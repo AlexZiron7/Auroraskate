@@ -1,29 +1,8 @@
 {
   "main": [
-    {
-      "name": "facebook",
-      "icon": "FaFacebookF",
-      "link": "https://www.facebook.com/themefisher"
-    },
-    {
-      "name": "twitter",
-      "icon": "FaXTwitter",
-      "link": "https://x.com/themefisher"
-    },
-    {
-      "name": "linkedin",
-      "icon": "FaLinkedinIn",
-      "link": "https://bd.linkedin.com/company/themefisher"
-    },
-    {
-      "name": "github",
-      "icon": "FaGithub",
-      "link": "https://github.com/themefisher/shopplate"
-    },
-    {
-      "name": "instagram",
-      "icon": "FaInstagram",
-      "link": "https://www.instagram.com/themefisher/"
-    }
+    { "name": "Instagram", "icon": "tabler:brand-instagram", "link": "https://www.instagram.com/obbask8/" },
+    { "name": "Facebook",  "icon": "tabler:brand-facebook",  "link": "https://www.facebook.com/people/OBBA/100092390311434/" },
+    { "name": "TikTok",    "icon": "tabler:brand-tiktok",    "link": "https://www.tiktok.com/@obba?lang=es" },
+    { "name": "YouTube",   "icon": "tabler:brand-youtube",   "link": "https://www.youtube.com/@Obbask8" }
   ]
 }

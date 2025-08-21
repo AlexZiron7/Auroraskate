@@ -1,276 +1,154 @@
 ---
-import Logo from "@/components/Logo.astro";
+import Logo from "@/layouts/components/Logo.astro";
 import menu from "@/config/menu.json";
-import config from "@/config/config.json";
-import ThemeSwitcher from "@/components/ThemeSwitcher.astro";
-import NavUser from "@/functional-components/NavUser";
-import SearchBar from "@/functional-components/SearchBar";
-import Cart from "@/functional-components/cart/Cart.astro";
+import CurrencyMenu from "@/layouts/components/CurrencyMenu.astro";
 
-const { navigation_button, settings } = config;
+// componentes del tema (Astro, SIN client:*)
+import ThemeSwitcher from "@/layouts/components/ThemeSwitcher.astro";
+import Cart from "@/layouts/functional-components/cart/Cart.astro";
 
-// determine if a menu item is active
-const isMenuItemActive = (url: string) => {
-  const pathname = Astro.url.pathname;
-  if (url === "/") {
-    return pathname === url ? "active" : "";
-  }
-  return pathname.startsWith(url) ? "active" : "";
-};
-
-// determine if any child is active
-const isParentActive = (children: any[]) => {
-  return children.some((child) => isMenuItemActive(child.url));
-};
+const isHome = Astro.url.pathname === "/";
+const headerBgClass = isHome
+  ? "bg-white/10 dark:bg-black/20 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md"
+  : "bg-light dark:bg-darkmode-light";
 ---
 
-<header
-  class:list={[
-    "header z-30",
-    settings.sticky_header && "sticky top-0",
-    "transition-shadow duration-300",
-  ]}
->
-  <nav class="navbar flex-wrap container">
-    <div class="order-1 flex items-center">
-      <Logo />
-    </div>
+<header class={`sticky top-0 z-40 border-b border-border/60 dark:border-darkmode-border/60 ${headerBgClass}`}>
+  <div class="container">
+    <div class="flex items-center justify-between py-3 md:py-4">
+      <!-- IZQ: LOGO -->
+      <a href="/" class="inline-flex items-center">
+        <Logo />
+      </a>
 
-    <div class="max-lg:mt-4 w-full lg:w-auto lg:order-2 order-3 hidden md:flex justify-center">
-      <ul class="flex items-center space-x-8">
-        {menu.main.map((menuItem) => (
-          <li class:list={[menuItem.hasChildren && "relative group"]}>
-            {menuItem.hasChildren ? (
-              <>
-                <a href="#" class:list={["nav-link", "flex items-center", isParentActive(menuItem.children) && "text-primary font-medium"]}>
-                  {menuItem.name}
-                  <svg class="h-4 w-4 ml-1 transform transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </a>
-                <ul class="submenu absolute hidden group-hover:block bg-white dark:bg-darkmode-body shadow-lg rounded-md mt-2 py-2 w-48 z-10">
-                  {menuItem.children.map((child) => (
-                    <li>
-                      <a href={child.url} class:list={["block px-4 py-2 nav-link", isMenuItemActive(child.url) && "text-primary font-medium"]}>
-                        {child.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <a href={menuItem.url} class:list={["nav-link", isMenuItemActive(menuItem.url) && "text-primary font-medium"]}>
-                {menuItem.name}
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+      <!-- MENÚ CENTRO -->
+      <nav aria-label="Main navigation" class="hidden md:block">
+        <ul class="flex items-center gap-x-8">
+          {menu.main.map((item) => (
+            <li><a href={item.url} class="header-link">{item.name}</a></li>
+          ))}
+        </ul>
+      </nav>
 
-    <div class="order-2 lg:order-3 ml-auto flex items-center lg:ml-0">
-      <ThemeSwitcher className="mr-4 md:mr-6" />
-      <Cart />
-
-      {
-        settings.account && (
-          <div class="ml-4 md:ml-6">
-            <NavUser pathname={Astro.url.pathname} client:load />
-          </div>
-        )
-      }
-
-      <div class="relative z-40 block md:hidden ml-6">
-        {/* Mobile menu toggle button */}
-        <label
-          for="nav-toggle-mobile"
-          class="cursor-pointer flex items-center text-text-dark dark:text-white border border-border dark:border-border/40 p-1 rounded-md"
-        >
-          <button id="nav-toggle-mobile" class="focus:outline-none">
-            <svg class="h-5 fill-current block menu-open" viewBox="0 0 20 20">
-              <title>Menu Open</title>
-              <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
-            </svg>
-            <svg class="h-5 fill-current hidden menu-close" viewBox="0 0 20 20">
-              <title>Menu Close</title>
-              <polygon
-                points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                transform="rotate(45 10 10)"></polygon>
-            </svg>
-          </button>
-        </label>
-
-        {/* Mobile menu sidebar */}
-        <div
-          class="fixed top-0 left-0 h-full bg-black opacity-50 w-full hidden overlay"
-        >
-        </div>
-        <div
-          class="fixed top-0 left-0 h-full bg-white dark:bg-darkmode-body overflow-y-auto w-full md:w-96 p-9 sidebar-mobile transform -translate-x-full transition-transform"
-        >
-          {/* Same navigation list as desktop but for mobile */}
-          <div class="flex justify-between items-center mb-14">
-            <Logo />
-            <button class="close-sidebar-mobile p-2">
-              <svg class="h-5 fill-current block" viewBox="0 0 20 20">
-                <title>Menu Close</title>
-                <polygon
-                  points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                  transform="rotate(45 10 10)"></polygon>
-              </svg>
-            </button>
-          </div>
-          <ul class="nav-list">
-            {
-              menu.main.map((menuItem) => (
-                <li
-                  class:list={[
-                    "nav-item",
-                    menuItem.hasChildren && "has-children",
-                  ]}
-                >
-                  {menuItem.hasChildren ? (
-                    <>
-                      <button
-                        class:list={[
-                          "nav-link w-full flex justify-between items-center",
-                          "py-2 px-3 rounded-lg transition-colors",
-                          isParentActive(menuItem.children) &&
-                            "text-primary font-medium",
-                        ]}
-                        data-submenu-toggle
-                      >
-                        {menuItem.name}
-                        <svg
-                          class="h-4 w-4 submenu-arrow transition-transform"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M6 9L12 15L18 9"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </button>
-                      <ul class="submenu hidden pl-4 mt-2 space-y-2 bg-white dark:bg-dark rounded-md shadow py-4">
-                        {menuItem.children.map((child) => (
-                          <li>
-                            <a
-                              href={child.url}
-                              class:list={[
-                                "nav-dropdown-link block",
-                                "py-2 px-3 rounded-lg transition-colors",
-                                isMenuItemActive(child.url) &&
-                                  "text-primary font-medium",
-                              ]}
-                            >
-                              {child.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : (
-                    <a
-                      href={menuItem.url}
-                      class:list={[
-                        "nav-link block",
-                        "py-2 px-3rounded-lg transition-colors",
-                        isMenuItemActive(menuItem.url) &&
-                          "text-primary font-medium",
-                      ]}
-                    >
-                      {menuItem.name}
-                    </a>
-                  )}
-                </li>
-              ))
-            }
-          </ul>
-        </div>
+      <!-- DER: Moneda + Toggle (Astro) + Carrito (Astro) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <CurrencyMenu />
+        <ThemeSwitcher />
+        <Cart />
       </div>
     </div>
-  </nav>
+
+    <!-- MENÚ MOBILE -->
+    <div class="md:hidden pb-3">
+      <nav>
+        <ul class="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {menu.main.map((item) => (
+            <li><a href={item.url} class="header-link">{item.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ===== Script ligero para /products (sin MutationObserver) ===== -->
+  <script is:inline>
+    (function () {
+      if (!location.pathname.startsWith('/products')) return;
+
+      // 1) TÍTULO y H1 -> Cursos
+      try { document.title = 'AuroEscape-Cursos'; } catch (e) {}
+      const rename = () => {
+        const h1 = document.querySelector('h1');
+        if (h1 && /product/i.test(h1.textContent || '')) h1.textContent = 'Cursos';
+      };
+
+      // 2) Traducciones: pasada puntual (y una extra a los 800ms)
+      const dict = new Map([
+        ['Select Price Range','Rango de precios'],
+        ['Product Categories','Categorías'],
+        ['Brands','Marcas'],
+        ['Views','Vistas'],
+        ['Sort By','Ordenar por'],
+        ['Relevance','Relevancia'],
+        ['Add to cart','Añadir al carrito'],
+        ['Add to Cart','Añadir al carrito'],
+        ['Buy now','Comprar ahora'],
+        ['Filter','Filtrar'],
+        ['Filters','Filtros'],
+        ['Apply','Aplicar'],
+        ['Clear','Limpiar'],
+        ['Price','Precio'],
+        ['Products','Cursos'],
+        ['Product','Curso'],
+        ['All Products','Todos los cursos'],
+        ['No products found','No se encontraron cursos']
+      ]);
+
+      const translateOnce = () => {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+        const changes = [];
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const t = node.nodeValue?.trim();
+          if (!t) continue;
+          for (const [en, es] of dict) { if (t === en) { changes.push([node, es]); break; } }
+        }
+        for (const [node, es] of changes) node.nodeValue = es;
+        rename();
+      };
+
+      // 3) Conversión de moneda: marcar USD original una sola vez y recalc al cambiar
+      const RATES  = { USD:1,  EUR:0.92, MXN:18.0 };
+      const SYMBOL = { USD:'$', EUR:'€',  MXN:'$'   };
+      const SUFFIX = { USD:' USD', EUR:' EUR', MXN:' MXN' };
+
+      const parseNum = (txt) => {
+        const m = (txt || '').replace(',', '.').match(/-?\d+(?:\.\d+)?/);
+        return m ? parseFloat(m[0]) : null;
+      };
+
+      const markOriginalUSD = (el) => {
+        if (!el || el.dataset.origUsd) return;
+        const base = el.getAttribute('data-amount-usd');
+        const usd = base ? parseFloat(base) : parseNum(el.textContent || '');
+        if (usd != null && !Number.isNaN(usd)) el.dataset.origUsd = String(usd);
+      };
+
+      const collectPriceNodes = () => {
+        // intenta cubrir precios habituales del tema
+        const nodes = Array.from(document.querySelectorAll(
+          '.current-price, .old-price, .product-price, .price, [data-price], s, del'
+        )).filter(el => /\d/.test(el.textContent || ''));
+        nodes.forEach(markOriginalUSD);
+        return nodes;
+      };
+
+      let priceNodes = [];
+
+      const applyCurrency = () => {
+        const cur = (localStorage.getItem('currency') || 'USD');
+        const factor = RATES[cur] || 1;
+        for (const el of priceNodes) {
+          const usd = parseFloat(el.dataset.origUsd || '');
+          if (!Number.isNaN(usd)) {
+            el.textContent = `${SYMBOL[cur]} ${(usd * factor).toFixed(2)}${SUFFIX[cur]}`;
+          }
+        }
+      };
+
+      const initPrices = () => {
+        priceNodes = collectPriceNodes();
+        applyCurrency();
+        // Recolecta una vez más por si el grid llegó un poco tarde
+        setTimeout(() => { priceNodes = collectPriceNodes(); applyCurrency(); }, 800);
+      };
+
+      // Ejecuta una vez ahora y otra en ~800ms (sin observers)
+      translateOnce();
+      setTimeout(translateOnce, 800);
+
+      initPrices();
+      window.addEventListener('currencychange', applyCurrency);
+    })();
+  </script>
 </header>
-
-<script>
-  function initializeHeader() {
-    const header = document.querySelector("header");
-    const navToggle = document.querySelector("#nav-toggle");
-    const navToggleMobile = document.querySelector("#nav-toggle-mobile");
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarMobile = document.querySelector(".sidebar-mobile");
-    const overlay = document.querySelector(".overlay");
-    const closeButton = document.querySelector(".close-sidebar");
-    const closeButtonMobile = document.querySelector(".close-sidebar-mobile");
-    const menuOpenIcons = document.querySelectorAll(".menu-open");
-    const menuCloseIcons = document.querySelectorAll(".menu-close");
-    const submenuToggles = document.querySelectorAll("[data-submenu-toggle]");
-
-    let showSidebar = false;
-
-    function updateNavbarShadow() {
-      if (window.scrollY > 0) {
-        header?.classList.add("shadow-sm");
-      } else {
-        header?.classList.remove("shadow-sm");
-      }
-    }
-
-    function toggleSidebar() {
-      showSidebar = !showSidebar;
-      if (showSidebar) {
-        sidebar?.classList.remove("-translate-x-full");
-        sidebarMobile?.classList.remove("-translate-x-full");
-        overlay?.classList.remove("hidden");
-        menuOpenIcons.forEach((icon) => icon.classList.add("hidden"));
-        menuCloseIcons.forEach((icon) => icon.classList.remove("hidden"));
-      } else {
-        sidebar?.classList.add("-translate-x-full");
-        sidebarMobile?.classList.add("-translate-x-full");
-        overlay?.classList.add("hidden");
-        menuOpenIcons.forEach((icon) => icon.classList.remove("hidden"));
-        menuCloseIcons.forEach((icon) => icon.classList.add("hidden"));
-      }
-    }
-
-    function toggleSubmenu(e: any) {
-      const button = e.currentTarget;
-      const submenu = button.nextElementSibling;
-      const arrow = button.querySelector(".submenu-arrow");
-
-      submenu.classList.toggle("hidden");
-      arrow.classList.toggle("active");
-    }
-
-    // Event Listeners
-    window.addEventListener("scroll", updateNavbarShadow);
-    navToggle?.addEventListener("click", toggleSidebar);
-    navToggleMobile?.addEventListener("click", toggleSidebar);
-    overlay?.addEventListener("click", toggleSidebar);
-    closeButton?.addEventListener("click", toggleSidebar);
-    closeButtonMobile?.addEventListener("click", toggleSidebar);
-    submenuToggles.forEach((toggle) => {
-      toggle.addEventListener("click", toggleSubmenu);
-    });
-
-    // Cleanup function
-    return () => {
-      window.removeEventListener("scroll", updateNavbarShadow);
-      navToggle?.removeEventListener("click", toggleSidebar);
-      navToggleMobile?.removeEventListener("click", toggleSidebar);
-      overlay?.removeEventListener("click", toggleSidebar);
-      closeButton?.removeEventListener("click", toggleSidebar);
-      submenuToggles.forEach((toggle) => {
-        toggle.removeEventListener("click", toggleSubmenu);
-      });
-    };
-  }
-
-  // Initialize when the document is loaded
-  document.addEventListener("astro:page-load", initializeHeader);
-</script>

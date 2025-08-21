@@ -1,0 +1,15 @@
+---
+const label = "Moneda";
+function getSaved() { try { return localStorage.getItem('currency') || 'USD'; } catch(e) { return 'USD'; } }
+---
+
+<label class="sr-only">{label}</label>
+<select
+  class="rounded-full border px-3 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+  on:change={(e) => { window.setCurrency?.(e.currentTarget.value); }}
+  client:load
+>
+  <option value="USD" selected={getSaved() === 'USD'}>USD $</option>
+  <option value="EUR" selected={getSaved() === 'EUR'}>EUR €</option>
+  <option value="MXN" selected={getSaved() === 'MXN'}>MXN $</option>
+</select>

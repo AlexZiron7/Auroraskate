@@ -1,133 +1,85 @@
 ---
-import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
-import { markdownify } from "@/lib/utils/textConverter";
-import PageHeader from "@/partials/PageHeader.astro";
-import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import config from "@/config/config.json";
+import social from "@/config/social.json";
+import DynamicIcon from "@/helpers/DynamicIcon";
 
-const contact = (await getEntry(
-  "contact",
-  "-index"
-)) as CollectionEntry<"contact">;
 const { contact_form_action }: { contact_form_action: string } = config.params;
-const { title, meta_title, description, image, contact_meta } = contact.data;
+const allowed = new Set(["Instagram", "Facebook", "TikTok", "YouTube"]);
+const socials = (social?.main ?? []).filter((s) => allowed.has(s.name));
 ---
 
-<Base
-  title={title}
-  meta_title={meta_title}
-  description={description}
-  image={image}
->
-  <PageHeader title={title} />
+<Base title="AuroEscape-Contacto">
+  <main class="pt-24">
+    <section class="mx-auto max-w-6xl px-4">
+      <h1 class="text-4xl font-extrabold">Ponte en contacto</h1>
+      <p class="mt-2 text-gray-600">Preguntas sobre nuestros cursos o comunidad. Te respondemos pronto.</p>
 
-  <section class="pt-12 xl:pt-24">
-    <div class="container">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {
-          contact_meta &&
-            contact_meta?.map((contact) => (
-              <div class="p-10 bg-light dark:bg-darkmode-light rounded-md text-center">
-                <p
-                  set:html={markdownify(contact.name)}
-                  class="mb-6 h3 font-medium text-text-dark dark:text-darkmode-text-dark"
-                />
-                <p set:html={markdownify(contact.contact)} />
-              </div>
-            ))
-        }
+      <!-- Discord + Redes (arriba) -->
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <div id="discord" class="rounded-2xl border p-6">
+          <h2 class="text-2xl font-extrabold">Discord</h2>
+          <p class="mt-2 text-gray-600">Únete a nuestro Discord para compartir progreso y resolver dudas.</p>
+          <a href="#" class="mt-4 inline-block rounded-full border px-5 py-2 hover:bg-gray-50">Entrar al Discord</a>
+        </div>
+
+        <div class="rounded-2xl border p-6">
+          <h2 class="text-2xl font-extrabold">Síguenos</h2>
+          <p class="mt-2 text-gray-600">Estamos activos en nuestras redes.</p>
+          <ul class="mt-4 flex flex-wrap items-center gap-3">
+            {
+              socials.map((s) => (
+                <li>
+                  <a
+                    aria-label={s.name}
+                    href={s.link}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="inline-flex items-center gap-2 rounded-full border px-4 py-2 hover:bg-gray-50"
+                  >
+                    <DynamicIcon className="inline-block" icon={s.icon} />
+                    <span class="text-sm font-medium">{s.name}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="container">
-      <div class="mx-auto lg:col-10">
-        <h2 class="mb-14 text-center">¡Nos encantaría saber de usted!</h2>
-
-        <form
-          class="border border-border dark:border-darkmode-border rounded-md p-10"
-          action={contact_form_action}
-          method="POST"
-        >
-          <div class="mb-6 md:grid grid-cols-2 gap-x-8 max-md:space-y-6">
-            <div>
-              <label for="name" class="form-label">
-                Nombre <span class="text-red-500">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                class="form-input"
-                placeholder="John"
-                type="text"
-                required
-              />
-            </div>
-
-            <div>
-              <label for="name" class="form-label"> Apellido </label>
-              <input
-                id="name"
-                name="name"
-                class="form-input"
-                placeholder="Doe"
-                type="text"
-              />
-            </div>
+      <!-- Formulario (abajo) -->
+      <form action={contact_form_action || "#"} method="post" class="mt-10 grid gap-6">
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium mb-1">Nombre</label>
+            <input type="text" name="name" class="w-full rounded-xl border border-gray-300 px-4 py-3" placeholder="Tu nombre" />
           </div>
-
-          <div class="mb-6 md:grid grid-cols-2 gap-x-8 max-md:space-y-6">
-            <div>
-              <label for="email" class="form-label">
-                Dirección de Email <span class="text-red-500">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                class="form-input"
-                placeholder="john.doe@email.com"
-                type="email"
-                required
-              />
-            </div>
-
-            <div>
-              <label for="name" class="form-label">
-                Asunto <span class="text-red-500">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                class="form-input"
-                placeholder="Consulta sobre"
-                type="text"
-                required
-              />
-            </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Email</label>
+            <input type="email" name="email" class="w-full rounded-xl border border-gray-300 px-4 py-3" placeholder="tucorreo@ejemplo.com" />
           </div>
+        </div>
 
-          <div class="mb-6">
-            <label for="message" class="form-label">
-              Mensaje <span class="text-red-500">*</span>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              class="form-input"
-              placeholder="Escribe tu mensaje..."
-              rows={8}
-              required></textarea>
-          </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Curso</label>
+          <select name="course" class="w-full rounded-xl border border-gray-300 px-4 py-3">
+            <option>Iniciación al Skate</option>
+            <option>Trucos Intermedios</option>
+            <option>Avanzado &amp; Competición</option>
+          </select>
+        </div>
 
-          <div class="flex justify-end">
-            <button type="submit" class="btn btn-primary">
-              Enviar correo
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
+        <div>
+          <label class="block text-sm font-medium mb-1">Mensaje</label>
+          <textarea rows={6} name="message" class="w-full rounded-xl border border-gray-300 px-4 py-3" placeholder="Cuéntanos en qué te ayudamos"></textarea>
+        </div>
+
+        <div>
+          <button class="inline-flex items-center rounded-full bg-emerald-600 text-white px-6 py-3 font-semibold hover:bg-emerald-700">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
 </Base>
