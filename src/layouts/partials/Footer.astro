@@ -1,58 +1,73 @@
 ---
+import Logo from "@/layouts/components/Logo.astro";
+import menu from "@/config/menu.json";
 import social from "@/config/social.json";
+import config from "@/config/config.json";
+import { markdownify } from "@/lib/utils/textConverter";
 
-// Mapeo de ids simples -> Iconify
-const iconMap: Record<string, string> = {
-  instagram: "tabler:brand-instagram",
-  facebook: "tabler:brand-facebook",
-  twitter: "tabler:brand-twitter",
-  tiktok: "tabler:brand-tiktok",
-  youtube: "tabler:brand-youtube",
-};
-const resolveIcon = (id?: string) =>
-  id?.includes(":") ? id! : (iconMap[id?.toLowerCase() || ""] || "tabler:alert-circle");
+const { copyright } = config.params;
 
-// Solo dejamos las permitidas
-const allowed = new Set(["Instagram", "Facebook", "TikTok", "YouTube"]);
-const socials = (social?.main ?? []).filter((s) => allowed.has(s.name));
+const allowed = new Map([
+  ["instagram", "instagram"],
+  ["facebook", "facebook"],
+  ["tiktok", "tiktok"],
+  ["youtube", "youtube"],
+]);
+
+function resolveIcon(s: any) {
+  const name = (s.name || "").toLowerCase();
+  const slug = allowed.get(name);
+  let src = s.iconUrl || s.icon;
+
+  if (src && /^https?:\/\//.test(src)) return src;
+  if (src && /\.(png|svg|jpg|jpeg|webp)$/i.test(src))
+    return src.startsWith("/") ? src : `/icons/${src}`;
+  if (slug) return `/icons/${slug}.png`;
+  return null;
+}
+
+const socials = (social?.main ?? [])
+  .map((s: any) => {
+    const iconSrc = resolveIcon(s);
+    return iconSrc ? { name: s.name, href: s.link, src: iconSrc } : null;
+  })
+  .filter(Boolean);
 ---
 
 <footer class="bg-light dark:bg-darkmode-light mt-16 border-t border-border dark:border-darkmode-border">
   <div class="container">
-    <div class="py-10 flex flex-col md:flex-row items-center justify-between gap-6">
-      
-      <!-- Redes sociales -->
-      <ul class="flex items-center gap-4">
+    <div class="py-10 grid grid-cols-1 md:grid-cols-3 items-center gap-8">
+      <div class="justify-self-start"><Logo /></div>
+
+      <nav class="justify-self-center">
+        <ul class="flex items-center gap-8">
+          {(menu.footer ?? []).map((m) => (
+            <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <ul class="justify-self-end flex items-center gap-3">
         {socials.map((s) => (
           <li>
-            <a
-              href={s.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.name}
-              title={s.name}
-              class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border dark:border-darkmode-border hover:bg-black/5 dark:hover:bg-white/10"
-            >
-              <iconify-icon icon={resolveIcon(s.icon)} width="20" height="20"></iconify-icon>
+            <a href={s.href} aria-label={s.name} target="_blank" rel="noopener noreferrer nofollow"
+               class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border dark:border-darkmode-border hover:bg-black/5 dark:hover:bg-white/10">
+              <img src={s.src} alt="" width="20" height="20" loading="lazy" />
             </a>
           </li>
         ))}
       </ul>
+    </div>
 
-      <!-- Copyright -->
-      <p class="text-sm text-text-light dark:text-darkmode-text-light text-center md:text-right">
-        © {new Date().getFullYear()} Obba Skate. Todos los derechos reservados.
-      </p>
+    <hr class="border-border dark:border-darkmode-border" />
+
+    <div class="py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-text-light dark:text-darkmode-text-light">
+      <ul class="flex items-center gap-6">
+        {(menu.footerCopyright ?? []).map((m) => (
+          <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+        ))}
+      </ul>
+      <p class="text-sm" set:html={markdownify(copyright)} />
     </div>
   </div>
-
-  <!-- Script fallback por si no carga Iconify desde Base -->
-  <script is:inline>
-    if (!customElements.get('iconify-icon')) {
-      const s = document.createElement('script');
-      s.src = 'https://unpkg.com/@iconify-icon/web@2.1.0/dist/iconify-icon.min.js';
-      s.defer = true;
-      document.head.appendChild(s);
-    }
-  </script>
 </footer>

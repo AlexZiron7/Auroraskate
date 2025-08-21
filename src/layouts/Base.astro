@@ -181,3 +181,17 @@ const { title, meta_title, description, image, noindex, canonical } =
     <Footer />
   </body>
 </html>
+<style is:global>
+  /* Evita salto horizontal y estabiliza el ancho del viewport con modales */
+  html, body { overflow-x: hidden; }
+  html { overflow-y: scroll; scrollbar-gutter: stable both-edges; }
+
+  /* Si alguna lib añade padding-right al body para compensar scrollbar, neutralízalo */
+  body[style*="padding-right"] { padding-right: 0 !important; }
+
+  /* Asegura que el drawer del carrito no desborde */
+  .cart-drawer, [data-cart-drawer], #cart-drawer, .cart-modal {
+    z-index: 60 !important;
+    max-width: 100vw !important;
+  }
+</style>

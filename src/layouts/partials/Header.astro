@@ -1,154 +1,58 @@
 ---
+import AnnouncementBar from "@/layouts/components/AnnouncementBar.astro";
 import Logo from "@/layouts/components/Logo.astro";
 import menu from "@/config/menu.json";
-import CurrencyMenu from "@/layouts/components/CurrencyMenu.astro";
-
-// componentes del tema (Astro, SIN client:*)
 import ThemeSwitcher from "@/layouts/components/ThemeSwitcher.astro";
-import Cart from "@/layouts/functional-components/cart/Cart.astro";
+import Cart from "@/layouts/functional-components/cart/Cart.astro"; // ⬅️ Tu carrito original
 
-const isHome = Astro.url.pathname === "/";
-const headerBgClass = isHome
-  ? "bg-white/10 dark:bg-black/20 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md"
-  : "bg-light dark:bg-darkmode-light";
+// Header SIEMPRE traslúcido
+const headerBgClass =
+  "bg-white/10 dark:bg-black/20 backdrop-blur supports-[backdrop-filter]:backdrop-blur-md";
 ---
+
+<!-- Barra verde compacta -->
+<AnnouncementBar />
 
 <header class={`sticky top-0 z-40 border-b border-border/60 dark:border-darkmode-border/60 ${headerBgClass}`}>
   <div class="container">
-    <div class="flex items-center justify-between py-3 md:py-4">
-      <!-- IZQ: LOGO -->
-      <a href="/" class="inline-flex items-center">
-        <Logo />
-      </a>
+    <!-- Fila del header con altura fija: NO deja hueco arriba -->
+    <div class="relative h-16 md:h-[72px]">
+      <!-- IZQUIERDA: logo pegado arriba-izquierda (sin hueco) -->
+        <a href="/" class="absolute inset-y-0 left-0 flex items-center">
+          <div class="translate-y-[2px] md:translate-y-[3px]">
+            <Logo />
+          </div>
+        </a>
 
-      <!-- MENÚ CENTRO -->
-      <nav aria-label="Main navigation" class="hidden md:block">
-        <ul class="flex items-center gap-x-8">
+
+      <!-- CENTRO: menú exactamente centrado -->
+      <nav
+        aria-label="Main navigation"
+        class="hidden md:flex absolute inset-y-0 left-1/2 -translate-x-1/2 items-center z-10"
+      >
+        <ul class="flex items-center gap-x-10">
           {menu.main.map((item) => (
             <li><a href={item.url} class="header-link">{item.name}</a></li>
           ))}
         </ul>
       </nav>
 
-      <!-- DER: Moneda + Toggle (Astro) + Carrito (Astro) -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <CurrencyMenu />
+      <!-- DERECHA: Tema -> Carrito (MISMAS piezas) -->
+      <div class="absolute inset-y-0 right-0 flex items-center gap-4 z-40">
         <ThemeSwitcher />
-        <Cart />
+        <Cart />  <!-- ⬅️ No se cambia: respeta Shopify/storefront -->
       </div>
-    </div>
-
-    <!-- MENÚ MOBILE -->
-    <div class="md:hidden pb-3">
-      <nav>
-        <ul class="flex flex-wrap items-center gap-x-6 gap-y-2">
-          {menu.main.map((item) => (
-            <li><a href={item.url} class="header-link">{item.name}</a></li>
-          ))}
-        </ul>
-      </nav>
     </div>
   </div>
 
-  <!-- ===== Script ligero para /products (sin MutationObserver) ===== -->
-  <script is:inline>
-    (function () {
-      if (!location.pathname.startsWith('/products')) return;
-
-      // 1) TÍTULO y H1 -> Cursos
-      try { document.title = 'AuroEscape-Cursos'; } catch (e) {}
-      const rename = () => {
-        const h1 = document.querySelector('h1');
-        if (h1 && /product/i.test(h1.textContent || '')) h1.textContent = 'Cursos';
-      };
-
-      // 2) Traducciones: pasada puntual (y una extra a los 800ms)
-      const dict = new Map([
-        ['Select Price Range','Rango de precios'],
-        ['Product Categories','Categorías'],
-        ['Brands','Marcas'],
-        ['Views','Vistas'],
-        ['Sort By','Ordenar por'],
-        ['Relevance','Relevancia'],
-        ['Add to cart','Añadir al carrito'],
-        ['Add to Cart','Añadir al carrito'],
-        ['Buy now','Comprar ahora'],
-        ['Filter','Filtrar'],
-        ['Filters','Filtros'],
-        ['Apply','Aplicar'],
-        ['Clear','Limpiar'],
-        ['Price','Precio'],
-        ['Products','Cursos'],
-        ['Product','Curso'],
-        ['All Products','Todos los cursos'],
-        ['No products found','No se encontraron cursos']
-      ]);
-
-      const translateOnce = () => {
-        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-        const changes = [];
-        while (walker.nextNode()) {
-          const node = walker.currentNode;
-          const t = node.nodeValue?.trim();
-          if (!t) continue;
-          for (const [en, es] of dict) { if (t === en) { changes.push([node, es]); break; } }
-        }
-        for (const [node, es] of changes) node.nodeValue = es;
-        rename();
-      };
-
-      // 3) Conversión de moneda: marcar USD original una sola vez y recalc al cambiar
-      const RATES  = { USD:1,  EUR:0.92, MXN:18.0 };
-      const SYMBOL = { USD:'$', EUR:'€',  MXN:'$'   };
-      const SUFFIX = { USD:' USD', EUR:' EUR', MXN:' MXN' };
-
-      const parseNum = (txt) => {
-        const m = (txt || '').replace(',', '.').match(/-?\d+(?:\.\d+)?/);
-        return m ? parseFloat(m[0]) : null;
-      };
-
-      const markOriginalUSD = (el) => {
-        if (!el || el.dataset.origUsd) return;
-        const base = el.getAttribute('data-amount-usd');
-        const usd = base ? parseFloat(base) : parseNum(el.textContent || '');
-        if (usd != null && !Number.isNaN(usd)) el.dataset.origUsd = String(usd);
-      };
-
-      const collectPriceNodes = () => {
-        // intenta cubrir precios habituales del tema
-        const nodes = Array.from(document.querySelectorAll(
-          '.current-price, .old-price, .product-price, .price, [data-price], s, del'
-        )).filter(el => /\d/.test(el.textContent || ''));
-        nodes.forEach(markOriginalUSD);
-        return nodes;
-      };
-
-      let priceNodes = [];
-
-      const applyCurrency = () => {
-        const cur = (localStorage.getItem('currency') || 'USD');
-        const factor = RATES[cur] || 1;
-        for (const el of priceNodes) {
-          const usd = parseFloat(el.dataset.origUsd || '');
-          if (!Number.isNaN(usd)) {
-            el.textContent = `${SYMBOL[cur]} ${(usd * factor).toFixed(2)}${SUFFIX[cur]}`;
-          }
-        }
-      };
-
-      const initPrices = () => {
-        priceNodes = collectPriceNodes();
-        applyCurrency();
-        // Recolecta una vez más por si el grid llegó un poco tarde
-        setTimeout(() => { priceNodes = collectPriceNodes(); applyCurrency(); }, 800);
-      };
-
-      // Ejecuta una vez ahora y otra en ~800ms (sin observers)
-      translateOnce();
-      setTimeout(translateOnce, 800);
-
-      initPrices();
-      window.addEventListener('currencychange', applyCurrency);
-    })();
-  </script>
+  <!-- Nav móvil debajo -->
+  <div class="md:hidden pb-3">
+    <nav>
+      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        {menu.main.map((item) => (
+          <li><a href={item.url} class="header-link">{item.name}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
 </header>
