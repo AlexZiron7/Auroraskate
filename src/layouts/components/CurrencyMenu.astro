@@ -1,11 +1,23 @@
 ---
-const label = "Moneda";
+interface Props { context?: "bar" | "header" }
+const { context = "header" } = Astro.props;
+
 function getSaved() { try { return localStorage.getItem('currency') || 'USD'; } catch(e) { return 'USD'; } }
+
+const base =
+  "rounded-full text-sm px-3 py-2 border transition " +
+  "border-border dark:border-darkmode-border " +
+  "bg-white/90 dark:bg-darkmode-light/90 " +
+  "text-text-dark dark:text-darkmode-text-dark " +
+  "hover:bg-white dark:hover:bg-darkmode-light";
+
+const barOverrides =
+  "bg-emerald-700/40 text-white border-white/20 hover:bg-emerald-700/60";
 ---
 
-<label class="sr-only">{label}</label>
+<label class="sr-only">Moneda</label>
 <select
-  class="rounded-full border px-3 py-2 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+  class={`${base} ${context === "bar" ? barOverrides : ""}`}
   on:change={(e) => { window.setCurrency?.(e.currentTarget.value); }}
   client:load
 >

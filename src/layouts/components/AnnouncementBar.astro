@@ -1,0 +1,19 @@
+---
+import CurrencyMenu from "@/layouts/components/CurrencyMenu.astro";
+const link = "/products"; // Cursos
+---
+
+<div class="w-full bg-emerald-600 text-white">
+  <div class="container">
+    <div class="flex items-center justify-between py-2 text-sm">
+      <a href={link} class="underline underline-offset-2 hover:opacity-90">
+        ¿No sabes qué curso elegir? Explora nuestros cursos →
+      </a>
+
+      <!-- Selector de moneda en la barra (como tu referencia) -->
+      <div class="shrink-0">
+        <CurrencyMenu context="bar" />
+      </div>
+    </div>
+  </div>
+</div>
