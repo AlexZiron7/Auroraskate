@@ -22,17 +22,17 @@
 
   "params": {
     "contact_form_action": "#",
-    "copyright": "Designed And Developed by [Themefisher](https://themefisher.com/)"
+    "copyright": "Designed And Developed by [Auroradevs](https://www.instagram.com/aurora_devs/?hl=es)"
   },
 
   "navigation_button": {
     "enable": true,
     "label": "Get Started",
-    "link": "https://github.com/themefisher/shopplate"
+    "link": "https://www.instagram.com/aurora_devs/?hl=es"
   },
 
   "metadata": {
-    "meta_author": "Themefisher",
+    "meta_author": "auroradevs",
     "meta_image": "/images/og-image.png",
     "meta_description": "Shopify Storefront Boilerplate"
   },
