@@ -6,192 +6,100 @@ import { plainify } from "@/lib/utils/textConverter";
 import Footer from "@/partials/Footer.astro";
 import Header from "@/partials/Header.astro";
 import "@/styles/main.css";
+
+// Carga del contenedor del carrito (modal/drawer) para que el botón funcione
+// Ruta 1 (la más habitual en tu proyecto):
+import Cart from "@/layouts/functional-components/cart/Cart.astro";
+// Ruta alternativa (por si en tu repo quedó en otra carpeta):
+// import Cart from "@/layouts/functional-components/cart/Cart.astro";
+
 import { AstroFont } from "astro-font";
-import { ClientRouter } from "astro:transitions";
 
-// font families
-const pf = theme.fonts.font_family.primary;
-const sf = theme.fonts.font_family.secondary;
+// ====== META ======
+const { title, meta_title, description, image, noindex } = Astro.props;
+const site = config?.site ?? {};
+const metaTitle =
+  meta_title ??
+  title ??
+  site?.title ??
+  "Aurora Devs";
+const metaDesc =
+  description ??
+  site?.description ??
+  "Cursos online de skate: aprende, progresa y conéctate con la comunidad.";
+const metaImage = image ?? site?.meta_image;
+const lang = site?.lang ?? "es";
+const canonical = Astro.url.href;
 
-let fontPrimary, fontSecondary;
-if (theme.fonts.font_family.primary) {
-  fontPrimary = theme.fonts.font_family.primary
-    .replace(/\+/g, " ")
-    .replace(/:[ital,]*[ital@]*[wght@]*[0-9,;.]+/gi, "");
-}
-if (theme.fonts.font_family.secondary) {
-  fontSecondary = theme.fonts.font_family.secondary
-    .replace(/\+/g, " ")
-    .replace(/:[ital,]*[ital@]*[wght@]*[0-9,;.]+/gi, "");
-}
-
-// types for frontmatters
-export interface Props {
-  title?: string;
-  meta_title?: string;
-  description?: string;
-  image?: string;
-  noindex?: boolean;
-  canonical?: string;
-}
-
-// destructure frontmatter
-const { title, meta_title, description, image, noindex, canonical } =
-  Astro.props;
+// ====== Fuentes (respetamos tu theme.json, no cargamos nada extra si no está) ======
+const pf = theme?.fonts?.font_family?.primary ?? "";
+const sf = theme?.fonts?.font_family?.secondary ?? "";
+const fontPrimary = pf ? pf.split(",")[0]?.replace(/['"]/g, "") : undefined;
+const fontSecondary = sf ? sf.split(",")[0]?.replace(/['"]/g, "") : undefined;
 ---
 
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
   <head>
-    <!-- favicon -->
-     <script src="https://unpkg.com/@iconify-icon/web@2.1.0/dist/iconify-icon.min.js" defer></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="shortcut icon" href={config.site.favicon} />
-    <!-- theme meta -->
-    <meta name="theme-name" content="shopplate" />
-    <meta name="msapplication-TileColor" content="#000000" />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fff"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#000"
-    />
-    <meta name="generator" content={Astro.generator} />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{plainify(metaTitle)}</title>
+    <meta name="description" content={plainify(metaDesc)} />
 
-    <!-- google font css -->
-    <AstroFont
-      config={[
-        {
-          src: [],
-          preload: false,
-          display: "swap",
-          name: fontPrimary!,
-          fallback: "sans-serif",
-          cssVariable: "font-primary",
-          googleFontsURL: `https://fonts.googleapis.com/css2?family=${pf}&display=swap`,
-        },
-        {
-          src: [],
-          preload: false,
-          display: "swap",
-          name: fontSecondary!,
-          fallback: "sans-serif",
-          cssVariable: "font-secondary",
-          googleFontsURL: `https://fonts.googleapis.com/css2?family=${sf}&display=swap`,
-        },
-      ]}
-    />
+    <link rel="canonical" href={canonical} />
 
-    <!-- responsive meta -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=5"
-    />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={plainify(metaTitle)} />
+    <meta property="og:description" content={plainify(metaDesc)} />
+    {metaImage && <meta property="og:image" content={metaImage} />}
 
-    <!-- title -->
-    <title>
-      {plainify(meta_title ? meta_title : title ? title : config.site.title)}
-    </title>
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={plainify(metaTitle)} />
+    <meta name="twitter:description" content={plainify(metaDesc)} />
+    {metaImage && <meta name="twitter:image" content={metaImage} />}
 
-    <!-- canonical url -->
-    {canonical && <link rel="canonical" href={canonical} item-prop="url" />}
-
-    <!-- noindex robots -->
     {noindex && <meta name="robots" content="noindex,nofollow" />}
 
-    <!-- meta-description -->
-    <meta
-      name="description"
-      content={plainify(
-        description ? description : config.metadata.meta_description
-      )}
-    />
+    <!-- Tema claro/oscuro -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
+    <!-- CSS de overrides (ajustes globales y fix de Cursos) -->
+    <link rel="stylesheet" href="/styles/overrides.css" />
 
-
-
-    <!-- author from config.json -->
-    <meta name="author" content={config.metadata.meta_author} />
-
-    <!-- og-title -->
-    <meta
-      property="og:title"
-      content={plainify(
-        meta_title ? meta_title : title ? title : config.site.title
-      )}
-    />
-
-    <!-- og-description -->
-    <meta
-      property="og:description"
-      content={plainify(
-        description ? description : config.metadata.meta_description
-      )}
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content={`${config.site.base_url}/${Astro.url.pathname.replace("/", "")}`}
-    />
-
-    <!-- twitter-title -->
-    <meta
-      name="twitter:title"
-      content={plainify(
-        meta_title ? meta_title : title ? title : config.site.title
-      )}
-    />
-
-    <!-- twitter-description -->
-    <meta
-      name="twitter:description"
-      content={plainify(
-        description ? description : config.metadata.meta_description
-      )}
-    />
-
-    <!-- og-image -->
-    <meta
-      property="og:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
-
-    <!-- twitter-image -->
-    <meta
-      name="twitter:image"
-      content={`${config.site.base_url}${
-        image ? image : config.metadata.meta_image
-      }`}
-    />
-    <meta name="twitter:card" content="summary_large_image" />
+    <!-- Fuentes (respetando tu theme; si no hay fuentes definidas no se hace nada) -->
+    { (fontPrimary || fontSecondary) && (
+      <AstroFont
+        config={[
+          ...(fontPrimary ? [{ name: fontPrimary, src: [] }] : []),
+          ...(fontSecondary ? [{ name: fontSecondary, src: [] }] : []),
+        ]}
+        display="swap"
+        preload={false}
+      />
+    )}
   </head>
-  <body>
+
+  <!--
+    Empujamos el contenido SOLO en la página de Cursos para que la cabecera sticky
+    no “tape” nada. Detectamos /products como ruta de Cursos.
+  -->
+  <body class:list={{ 'route-cursos': Astro.url.pathname.startsWith('/products') }}>
     <TwSizeIndicator />
+
+    <!-- Cabecera (tu componente ya tiene clases sticky/top en su CSS) -->
     <Header />
+
+
+
     <main id="main-content">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>
-<style is:global>
-  /* Evita salto horizontal y estabiliza el ancho del viewport con modales */
-  html, body { overflow-x: hidden; }
-  html { overflow-y: scroll; scrollbar-gutter: stable both-edges; }
-
-  /* Si alguna lib añade padding-right al body para compensar scrollbar, neutralízalo */
-  body[style*="padding-right"] { padding-right: 0 !important; }
-
-  /* Asegura que el drawer del carrito no desborde */
-  .cart-drawer, [data-cart-drawer], #cart-drawer, .cart-modal {
-    z-index: 60 !important;
-    max-width: 100vw !important;
-  }
-</style>

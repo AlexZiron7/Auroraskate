@@ -1,0 +1,89 @@
+---
+interface Props {
+  headerHeight?: number; // fallback si no usas CSS var
+}
+const { headerHeight = 64 } = Astro.props;
+---
+
+<style>
+  :root { --header-h: 64px; }
+  @media (min-width: 768px) {
+    :root { --header-h: 64px; } /* ajusta si tu header real es mayor */
+  }
+
+  .drawer {
+    position: fixed;
+    top: var(--header-h);
+    right: 0;
+    bottom: 0;
+    width: min(420px, 100vw);
+    background: #12161f;
+    color: white;
+    transform: translateX(100%);
+    transition: transform .28s ease;
+    z-index: 45; /* por debajo del header si tu header usa z-50 */
+  }
+  .drawer.open {
+    transform: translateX(0);
+  }
+  .drawer-overlay {
+    position: fixed;
+    top: var(--header-h);
+    left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .28s ease;
+    z-index: 40;
+  }
+  .drawer-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+</style>
+
+<div id="cart-overlay" class="drawer-overlay"></div>
+<aside id="cart-drawer" class="drawer">
+  <!-- Aquí conserva tu UI de Shopify / contenido del carrito -->
+  <div class="h-full overflow-y-auto">
+    <header class="p-4 border-b border-white/10 flex items-center justify-between">
+      <h3 class="font-semibold">Tu carrito</h3>
+      <button id="cart-close" class="rounded-md px-2 py-1 text-sm bg-white/10 hover:bg-white/20">Cerrar</button>
+    </header>
+
+    <div class="p-4 text-sm text-gray-300">
+      <!-- Placeholder: tu contenido/cart listing va aquí -->
+      <slot />
+    </div>
+  </div>
+</aside>
+
+<script>
+  // Abrir/cerrar desde cualquier trigger que emita 'cart:toggle'
+  const drawer = document.getElementById('cart-drawer');
+  const overlay = document.getElementById('cart-overlay');
+  const closeBtn = document.getElementById('cart-close');
+
+  function open() {
+    drawer?.classList.add('open');
+    overlay?.classList.add('show');
+    document.documentElement.style.overflow = 'hidden'; // evitar scroll del body
+  }
+  function close() {
+    drawer?.classList.remove('open');
+    overlay?.classList.remove('show');
+    document.documentElement.style.overflow = '';
+  }
+
+  document.addEventListener('cart:open', open);
+  document.addEventListener('cart:close', close);
+  document.addEventListener('cart:toggle', () => {
+    drawer?.classList.contains('open') ? close() : open();
+  });
+
+  overlay?.addEventListener('click', close);
+  closeBtn?.addEventListener('click', close);
+
+  // Si tu trigger del header antes hacía algo como abrir un modal,
+  // añade en ese trigger: document.dispatchEvent(new CustomEvent('cart:toggle'));
+</script>

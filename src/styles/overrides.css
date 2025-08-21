@@ -1,0 +1,21 @@
+/* === Overrides globales no invasivos === */
+
+/* Evita scroll horizontal/“borde blanco” */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Mantén el carrito con color estable (si el botón usa esta clase) */
+.cart-trigger, .cart-trigger * {
+  color: #161616 !important; /* ajusta a tu color base si lo prefieres */
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Cuando estemos en la ruta de cursos, empuja el contenido hacia abajo
+   para que no lo tape la cabecera sticky/translúcida.
+   (Ver el paso 3 para activar la clase en <body>).
+*/
+.route-cursos main#main-content {
+  padding-top: clamp(72px, 10vh, 112px); /* margen superior “bajo cabecera” */
+}

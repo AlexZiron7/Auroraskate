@@ -1,5 +1,4 @@
 ---
-import Logo from "@/layouts/components/Logo.astro";
 import menu from "@/config/menu.json";
 import social from "@/config/social.json";
 import config from "@/config/config.json";
@@ -7,67 +6,84 @@ import { markdownify } from "@/lib/utils/textConverter";
 
 const { copyright } = config.params;
 
-const allowed = new Map([
-  ["instagram", "instagram"],
-  ["facebook", "facebook"],
-  ["tiktok", "tiktok"],
-  ["youtube", "youtube"],
-]);
+// redes permitidas
+const allowed = new Set(["Instagram", "Facebook", "TikTok", "YouTube"]);
+const socials = (social?.main ?? []).filter((s) => allowed.has(s.name));
 
-function resolveIcon(s: any) {
-  const name = (s.name || "").toLowerCase();
-  const slug = allowed.get(name);
-  let src = s.iconUrl || s.icon;
-
-  if (src && /^https?:\/\//.test(src)) return src;
-  if (src && /\.(png|svg|jpg|jpeg|webp)$/i.test(src))
-    return src.startsWith("/") ? src : `/icons/${src}`;
-  if (slug) return `/icons/${slug}.png`;
+// util para mapear a archivos locales en /public/icons/*.png
+const iconSrc = (name: string) => {
+  const n = (name || "").toLowerCase();
+  if (n.includes("instagram")) return "/icons/instagram.png";
+  if (n.includes("facebook"))  return "/icons/facebook.png";
+  if (n.includes("tiktok"))    return "/icons/tiktok.png";
+  if (n.includes("youtube"))   return "/icons/youtube.png";
   return null;
-}
-
-const socials = (social?.main ?? [])
-  .map((s: any) => {
-    const iconSrc = resolveIcon(s);
-    return iconSrc ? { name: s.name, href: s.link, src: iconSrc } : null;
-  })
-  .filter(Boolean);
+};
 ---
 
-<footer class="bg-light dark:bg-darkmode-light mt-16 border-t border-border dark:border-darkmode-border">
-  <div class="container">
-    <div class="py-10 grid grid-cols-1 md:grid-cols-3 items-center gap-8">
-      <div class="justify-self-start"><Logo /></div>
+<footer class="bg-[#0f1420] dark:bg-[#0f1420] text-gray-300 mt-16 border-t border-white/5">
+  <div class="container mx-auto px-4">
+    <!-- fila superior -->
+    <div class="py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <!-- Col 1 -->
+      <div>
+        <h3 class="text-white font-extrabold text-lg">obba shop</h3>
+        <p class="mt-2 text-xs text-gray-400 max-w-sm">
+          Cursos de skate online. Aprende, progresa y conecta.
+        </p>
+      </div>
 
-      <nav class="justify-self-center">
-        <ul class="flex items-center gap-8">
-          {(menu.footer ?? []).map((m) => (
-            <li class="footer-link"><a href={m.url}>{m.name}</a></li>
+      <!-- Col 2 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Enlaces rápidos</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a class="hover:text-white" href="/products">Cursos</a></li>
+          <li><span class="text-gray-500">Comunidad</span></li>
+          <li><span class="text-gray-500">Beneficios</span></li>
+          <li><a class="hover:text-white" href="/contacto">Contacto</a></li>
+          <li><a class="hover:text-white" href="#">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Síguenos</h4>
+        <ul class="flex items-center gap-3">
+          {socials.map((s) => (
+            <li>
+              <a href={s.link} target="_blank" rel="noopener noreferrer nofollow" aria-label={s.name}
+                 class="inline-flex w-8 h-8 rounded-full ring-1 ring-white/10 overflow-hidden bg-white/5 hover:bg-white/10">
+                {iconSrc(s.name) ? (
+                  <img src={iconSrc(s.name)!} alt={s.name} class="w-full h-full object-contain p-1.5" />
+                ) : (
+                  <span class="sr-only">{s.name}</span>
+                )}
+              </a>
+            </li>
           ))}
         </ul>
-      </nav>
+      </div>
 
-      <ul class="justify-self-end flex items-center gap-3">
-        {socials.map((s) => (
-          <li>
-            <a href={s.href} aria-label={s.name} target="_blank" rel="noopener noreferrer nofollow"
-               class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-border dark:border-darkmode-border hover:bg-black/5 dark:hover:bg-white/10">
-              <img src={s.src} alt="" width="20" height="20" loading="lazy" />
-            </a>
-          </li>
-        ))}
-      </ul>
+      <!-- Col 4 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Métodos de pago</h4>
+        <div class="flex items-center gap-3">
+          <!-- Logotipos reducidos; elimina el último (Stripe/otro) -->
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-4 opacity-90" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-4 opacity-90" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4 opacity-90" />
+        </div>
+      </div>
     </div>
 
-    <hr class="border-border dark:border-darkmode-border" />
-
-    <div class="py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-text-light dark:text-darkmode-text-light">
-      <ul class="flex items-center gap-6">
-        {(menu.footerCopyright ?? []).map((m) => (
-          <li class="footer-link"><a href={m.url}>{m.name}</a></li>
-        ))}
-      </ul>
-      <p class="text-sm" set:html={markdownify(copyright)} />
+    <!-- fila inferior -->
+    <div class="py-4 border-t border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+      <p class="text-[11px] text-gray-400" set:html={markdownify(copyright)} />
+      <div class="w-full md:w-auto text-right">
+        <a href="https://tu-enlace-de-auroradef.com" target="_blank" rel="noopener" class="text-[11px] text-gray-400 hover:text-white">
+          Desarrollado por AuroraDef
+        </a>
+      </div>
     </div>
   </div>
 </footer>
