@@ -98,12 +98,12 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
       </div>
 
 
-     <!-- DERECHA: Tema -> Carrito (MISMAS piezas, bien ubicadas) -->
-      <div class="absolute inset-y-0 right-100 flex items-center gap-4 z-40">
-        <ThemeSwitcher />
-        <Cart />  <!-- ⬅️ respetamos tu componente original -->
-      </div>
-    </div>
+  <!-- DERECHA: Tema -> Carrito -->
+  <div class="flex items-center justify-end gap-3 md:gap-4">
+    <ThemeSwitcher />
+    <Cart />
+  </div>
+</div>
   </div>
     </div>
   </div>
