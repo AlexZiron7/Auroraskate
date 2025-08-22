@@ -7,11 +7,9 @@ import Footer from "@/partials/Footer.astro";
 import Header from "@/partials/Header.astro";
 import "@/styles/main.css";
 
-// Carga del contenedor del carrito (modal/drawer) para que el botón funcione
-// Ruta 1 (la más habitual en tu proyecto):
+// Carga del contenedor del carrito (modal/drawer) para que el botón funcione.
+// Si no lo usas aquí, no pasa nada —pero no lo quito para no romper nada.
 import Cart from "@/layouts/functional-components/cart/Cart.astro";
-// Ruta alternativa (por si en tu repo quedó en otra carpeta):
-// import Cart from "@/layouts/functional-components/cart/Cart.astro";
 
 import { AstroFont } from "astro-font";
 
@@ -30,12 +28,6 @@ const metaDesc =
 const metaImage = image ?? site?.meta_image;
 const lang = site?.lang ?? "es";
 const canonical = Astro.url.href;
-
-// ====== Fuentes (respetamos tu theme.json, no cargamos nada extra si no está) ======
-const pf = theme?.fonts?.font_family?.primary ?? "";
-const sf = theme?.fonts?.font_family?.secondary ?? "";
-const fontPrimary = pf ? pf.split(",")[0]?.replace(/['"]/g, "") : undefined;
-const fontSecondary = sf ? sf.split(",")[0]?.replace(/['"]/g, "") : undefined;
 ---
 
 <!DOCTYPE html>
@@ -68,38 +60,57 @@ const fontSecondary = sf ? sf.split(",")[0]?.replace(/['"]/g, "") : undefined;
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
 
-    <!-- CSS de overrides (ajustes globales y fix de Cursos) -->
+    <!-- Overrides globales -->
     <link rel="stylesheet" href="/styles/overrides.css" />
 
-    <!-- Fuentes (respetando tu theme; si no hay fuentes definidas no se hace nada) -->
-    { (fontPrimary || fontSecondary) && (
-      <AstroFont
-        config={[
-          ...(fontPrimary ? [{ name: fontPrimary, src: [] }] : []),
-          ...(fontSecondary ? [{ name: fontSecondary, src: [] }] : []),
-        ]}
-        display="swap"
-        preload={false}
-      />
-    )}
+    <!-- Fuentes (respetando tu theme; si no hay fuentes definidas no se carga nada) -->
+    {
+      (() => {
+        const pf = theme?.fonts?.font_family?.primary ?? "";
+        const sf = theme?.fonts?.font_family?.secondary ?? "";
+        const fontPrimary = pf ? pf.split(",")[0]?.replace(/['"]/g, "") : undefined;
+        const fontSecondary = sf ? sf.split(",")[0]?.replace(/['"]/g, "") : undefined;
+
+        return (fontPrimary || fontSecondary) ? (
+          <AstroFont
+            config={[
+              ...(fontPrimary ? [{ name: fontPrimary, src: [] }] : []),
+              ...(fontSecondary ? [{ name: fontSecondary, src: [] }] : []),
+            ]}
+            display="swap"
+            preload={false}
+          />
+        ) : null;
+      })()
+    }
   </head>
 
-  <!--
-    Empujamos el contenido SOLO en la página de Cursos para que la cabecera sticky
-    no “tape” nada. Detectamos /products como ruta de Cursos.
-  -->
   <body class:list={{ 'route-cursos': Astro.url.pathname.startsWith('/products') }}>
     <TwSizeIndicator />
 
-    <!-- Cabecera (tu componente ya tiene clases sticky/top en su CSS) -->
+    <!-- Cabecera (ya es sticky/translúcida en tu componente) -->
     <Header />
-
-
 
     <main id="main-content">
       <slot />
     </main>
 
     <Footer />
+
+    {/*
+      Empujamos SOLO la página de /products para que el header sticky no tape nada.
+      Puedes ajustar --header-height si tu cabecera mide más.
+    */}
+    {
+      Astro.url.pathname.startsWith("/products") && (
+        <style is:global>
+          :root{ --header-height: 64px; }
+          main{ padding-top: calc(var(--header-height) + 24px) !important; }
+          @media (max-width:768px){
+            main{ padding-top: calc(var(--header-height) + 36px) !important; }
+          }
+        </style>
+      )
+    }
   </body>
 </html>

@@ -1,21 +1,66 @@
-/* === Overrides globales no invasivos === */
+/* =========================================================
+   OVERRIDES GLOBALES
+   ========================================================= */
 
-/* Evita scroll horizontal/“borde blanco” */
-html, body {
+/* 1) Bloquear scroll horizontal en toda la web */
+html,
+body {
+  max-width: 100%;
   overflow-x: hidden;
 }
 
-/* Mantén el carrito con color estable (si el botón usa esta clase) */
-.cart-trigger, .cart-trigger * {
-  color: #161616 !important; /* ajusta a tu color base si lo prefieres */
-  fill: currentColor !important;
-  stroke: currentColor !important;
+body {
+  overscroll-behavior-x: none;
 }
 
-/* Cuando estemos en la ruta de cursos, empuja el contenido hacia abajo
-   para que no lo tape la cabecera sticky/translúcida.
-   (Ver el paso 3 para activar la clase en <body>).
+/* 2) Asegurar que el header sticky se quede arriba (por si algún estilo del tema lo pisa) */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* 3) Carrito SIEMPRE blanco (icono + descendientes)
+   - Tu botón/trigger inyecta un elemento con id="cartOverlay".
+   - Con esto no importa el tema claro/oscuro, se verá blanco.
 */
-.route-cursos main#main-content {
-  padding-top: clamp(72px, 10vh, 112px); /* margen superior “bajo cabecera” */
+#cartOverlay,
+#cartOverlay *,
+button#cartOverlay,
+button#cartOverlay * {
+  color: #fff !important;
+  fill:  #fff !important;
+  stroke:#fff !important;
+}
+
+/* Si el SVG hereda currentColor, lo forzamos igualmente */
+#cartOverlay svg {
+  color: #fff !important;
+  fill:  #fff !important;
+  stroke:#fff !important;
+}
+
+/* Badge del contador, si lo hay (ajusta colores si lo prefieres) */
+#cartOverlay .badge,
+#cartOverlay [data-badge],
+#cartOverlay [data-cart-count] {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* 4) Botón de abrir carrito (fallback por si el id cambia en algún build):
+   Fuerza el SVG a blanco igualmente. */
+button[aria-label="Open cart"] svg {
+  color: #fff !important;
+  fill:  #fff !important;
+  stroke:#fff !important;
+}
+
+/* (Opcional) Evitar que algún contenedor ancho cree scroll horizontal */
+#main-content,
+main,
+.container,
+.wrapper {
+  max-width: 100%;
 }

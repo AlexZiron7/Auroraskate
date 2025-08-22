@@ -1,25 +1,31 @@
 ---
-import AnnouncementBar from "@/layouts/components/AnnouncementBar.astro";
+
 import Logo from "@/layouts/components/Logo.astro";
-import menu from "@/config/menu.json";
 import ThemeSwitcher from "@/layouts/components/ThemeSwitcher.astro";
 import Cart from "@/layouts/functional-components/cart/Cart.astro"; // carrito original
-// Detectamos si estamos en /products o /cursos para aplicar un padding extra al main desde Base
 const { url } = Astro;
 const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith("/cursos");
 ---
 
 <style>
+
+   :root{
+    --header-h: 64px;
+  }
+  @media (min-width:768px){
+    :root{ --header-h: 72px; }
+  }
   /* Header translúcido fijo arriba */
   .site-header {
-    position: sticky;
-    top: 0;
+    position: fixed; 
+    top: 0; left: 0; right: 0;
     z-index: 50;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     background: rgba(0,0,0,0.55); /* translúcido siempre */
     border-bottom: 1px solid rgba(255,255,255,.08);
   }
+
 
   /* Contenedor a 3 columnas: izq logo, centro nav, der acciones */
   .header-grid {
@@ -29,9 +35,7 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
     min-height: 64px;
     gap: 16px;
   }
-
-  .left,
-  .right { display: flex; align-items: center; gap: 14px; }
+  .left,.right { display: flex; align-items: center; gap: 14px; }
 
   .left { justify-content: flex-start; }
   .center { display:flex; justify-content:center; }
@@ -101,13 +105,13 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
   <!-- DERECHA: Tema -> Carrito -->
   <div class="flex items-center justify-end gap-3 md:gap-4">
     <ThemeSwitcher />
+    <span id="cart-anchor" class="inline-flex"></span>
     <Cart />
-  </div>
-</div>
-  </div>
+      </div>
     </div>
   </div>
 </header>
+
 
 <!-- Ajuste de padding superior del contenido para que nada quede tapado por la cabecera -->
 {isCursos
@@ -132,7 +136,15 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
   window.addEventListener("load", moveCart);
   document.addEventListener("astro:after-swap", moveCart);
 
-  // Si el trigger se hidrata más tarde, lo reubicamos automáticamente
-  const obs = new MutationObserver(() => moveCart());
-  obs.observe(document.documentElement, { childList: true, subtree: true });
+  new MutationObserver(() => moveCart()).observe(document.documentElement, { childList: true, subtree: true });
+
+  // Fallback universal: si haces scroll, forzamos modo fijo.
+  // (No añadimos padding al body porque tu <main> ya tiene padding-top)
+  const header = document.getElementById('site-header');
+  const onScroll = () => {
+    if (window.scrollY > 0) header.classList.add('header-fixed');
+    else header.classList.remove('header-fixed');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 </script>
