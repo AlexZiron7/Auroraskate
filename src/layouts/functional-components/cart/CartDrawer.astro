@@ -8,7 +8,7 @@ const { headerHeight = 64 } = Astro.props;
 <style>
   :root { --header-h: 64px; }
   @media (min-width: 768px) {
-    :root { --header-h: 64px; } /* ajusta si tu header real es mayor */
+    :root { --header-h: 72px; } /* ajusta si tu header real es mayor */
   }
 
   .drawer {
@@ -26,11 +26,11 @@ const { headerHeight = 64 } = Astro.props;
   .drawer.open {
     transform: translateX(0);
   }
-  .drawer-overlay {
+  .drawer-overlay { 
     position: fixed;
     top: var(--header-h);
     left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,.4);
+    background: rgba(255, 255, 255, 0.4);
     opacity: 0;
     pointer-events: none;
     transition: opacity .28s ease;

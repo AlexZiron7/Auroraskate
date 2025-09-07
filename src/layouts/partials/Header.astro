@@ -52,9 +52,9 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
   .icon-btn{
     display:inline-flex; align-items:center; justify-content:center;
     width:34px; height:34px; border-radius:9999px;
-    border:1px solid rgba(255,255,255,.25);
+    border:1px solid rgba(255, 255, 255, 0.25);
     background: transparent;
-    transition: background .2s ease;
+    transition: background .5s ease;
   }
   .icon-btn:hover{ background: rgba(255,255,255,.10); }
 
@@ -69,11 +69,11 @@ const isCursos = url.pathname.startsWith("/products") || url.pathname.startsWith
     width: 34px;
     height: 34px;
     border-radius: 9999px;
-    border: 1px solid rgba(255,255,255,.25);
+    border: 1px solid rgb(255, 255, 255);
     background: transparent;
     transition: background .2s ease;
   }
-  #cart-anchor > #cartOverlay:hover { background: rgba(255,255,255,.10); }
+  #cart-anchor > #cartOverlay:hover { background: rgb(255, 255, 255); }
   #cart-anchor > #cartOverlay svg { color:#fff !important; fill:#fff !important; }
 
   /* En móviles, el nav centra igual y se oculta en xs si quieres */

@@ -66,7 +66,7 @@ const CartModal: React.FC = () => {
 
         <div
           id="cartDialog"
-          className={`fixed inset-y-0 right-0 z-50 w-full md:w-[390px] transform transition-transform duration-300 ease-in-out ${
+          className={`absolute right-0 top-[64px] z-50 w-full md:w-[390px] transform transition-transform duration-300 ease-in-out ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -118,7 +118,7 @@ const CartModal: React.FC = () => {
 
       <div
         id="cartDialog"
-        className={`fixed inset-y-0 right-0 z-50 w-full md:w-[390px] transform transition-transform duration-300 ease-in-out ${
+        className={`absolute right-0 top-[64px] z-50 w-full md:w-[390px] transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
