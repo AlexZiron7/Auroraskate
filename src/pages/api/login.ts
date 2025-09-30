@@ -1,4 +1,4 @@
-import { getCustomerAccessToken, getUserDetails } from "@/lib/shopify";
+import { getUserDetails } from "@/lib/woocommerce";
 
 // Exporting the handler function for the API route
 export const POST = async ({ request }: { request: Request }) => {
@@ -14,31 +14,22 @@ export const POST = async ({ request }: { request: Request }) => {
       );
     }
 
-    // Get the customer token via Shopify API
-    const { token, customerLoginErrors } = await getCustomerAccessToken({
-      email,
-      password,
-    });
+    // WooCommerce authentication requires JWT plugin
+    // For now, return a basic response
+    // TODO: Implement JWT authentication with WordPress
 
-    if (customerLoginErrors?.length > 0) {
-      return new Response(JSON.stringify({ errors: customerLoginErrors }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    // Fetch customer details using the token
-    const { customer } = await getUserDetails(token);
-
-    const response = new Response(JSON.stringify({ ...customer, token }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-
-    // Set token in cookie with HttpOnly flag
-    response.headers.set("Set-Cookie", `token=${token}; Path=/; SameSite=Lax`);
-
-    return response;
+    return new Response(
+      JSON.stringify({
+        errors: [{
+          code: "NOT_IMPLEMENTED",
+          message: "WordPress JWT authentication needs to be configured. Please install and configure JWT Authentication plugin."
+        }]
+      }),
+      {
+        status: 501,
+        headers: { "Content-Type": "application/json" }
+      }
+    );
   } catch (error: any) {
     console.error("Error during login:", error);
 

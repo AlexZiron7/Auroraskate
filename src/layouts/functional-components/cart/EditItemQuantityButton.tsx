@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { updateCartItemQuantity, refreshCartState } from "@/cartStore";
-import type { CartItem } from "@/lib/shopify/types";
+import type { CartItem } from "@/lib/woocommerce/types";
 import LoadingDots from "../loadings/LoadingDots";
 
 interface Props {

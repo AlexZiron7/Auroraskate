@@ -1,0 +1,62 @@
+# Este flujo de trabajo despliega un sitio de Astro en GitHub Pages.
+
+name: Deploy to GitHub Pages
+
+on:
+  # El flujo de trabajo se ejecuta cuando hay un push en la rama "main"
+  push:
+    branches: ["main"]
+
+  # También permite ejecutarlo manualmente desde la pestaña "Actions"
+  workflow_dispatch:
+
+# Permisos necesarios para el despliegue
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# La ejecución del flujo de trabajo consiste en un solo trabajo
+jobs:
+  # Trabajo llamado "build_and_deploy"
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Paso 1: Obtener el código de tu repositorio
+      - name: Checkout your repository
+        uses: actions/checkout@v4
+      
+      # Paso 2: Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # Paso 3: Instalar las dependencias de tu proyecto
+      - name: Install dependencies
+        run: npm install
+
+      # Paso 4: Construir el proyecto de Astro para producción
+      - name: Build Astro project
+        run: npm run build
+
+      # Paso 5: Subir la carpeta de construcción (dist/) como un artefacto
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  # Trabajo llamado "deploy" que se ejecuta después de "build_and_deploy"
+  deploy:
+    needs: build_and_deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

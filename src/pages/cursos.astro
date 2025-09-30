@@ -1,0 +1,43 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base title="AuroraSkate — Cursos">
+
+    
+  <main class="pt-24">
+    <section class="mx-auto max-w-6xl px-4">
+      <h1 class="text-4xl font-extrabold">Cursos</h1>
+      <p class="mt-3 text-lg text-gray-600">Elige tu curso y empieza hoy mismo.</p>
+
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/images/product-1.png" class="w-full h-56 object-cover" alt="Iniciación al Skate" />
+          <div class="p-5">
+            <h3 class="font-semibold text-lg">Iniciación al Skate</h3>
+            <p class="text-sm text-gray-600 mt-1">Equilibrio, empuje y seguridad.</p>
+            <a href="/contact" class="inline-block mt-3 text-emerald-600 font-semibold hover:underline">Solicitar info →</a>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/images/product-2.png" class="w-full h-56 object-cover" alt="Trucos Intermedios" />
+          <div class="p-5">
+            <h3 class="font-semibold text-lg">Trucos Intermedios</h3>
+            <p class="text-sm text-gray-600 mt-1">Flips, grinds y más.</p>
+            <a href="/contact" class="inline-block mt-3 text-emerald-600 font-semibold hover:underline">Solicitar info →</a>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border shadow-sm overflow-hidden">
+          <img src="/images/product-3.png" class="w-full h-56 object-cover" alt="Avanzado & Competición" />
+          <div class="p-5">
+            <h3 class="font-semibold text-lg">Avanzado & Competición</h3>
+            <p class="text-sm text-gray-600 mt-1">Pulido técnico y mentalidad.</p>
+            <a href="/contact" class="inline-block mt-3 text-emerald-600 font-semibold hover:underline">Solicitar info →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

@@ -1,71 +1,86 @@
 ---
-import Logo from "@/components/Logo.astro";
-import config from "@/config/config.json";
 import menu from "@/config/menu.json";
 import social from "@/config/social.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
+import config from "@/config/config.json";
 import { markdownify } from "@/lib/utils/textConverter";
+
 const { copyright } = config.params;
 
-export interface ISocial {
-  name: string;
-  icon: string;
-  link: string;
-}
+// redes permitidas
+const allowed = new Set(["Instagram", "Facebook", "TikTok", "YouTube"]);
+const socials = (social?.main ?? []).filter((s) => allowed.has(s.name));
+
+// util para mapear a archivos locales en /public/icons/*.png
+const iconSrc = (name: string) => {
+  const n = (name || "").toLowerCase();
+  if (n.includes("instagram")) return "/icons/instagram.png";
+  if (n.includes("facebook"))  return "/icons/facebook.png";
+  if (n.includes("tiktok"))    return "/icons/tiktok.png";
+  if (n.includes("youtube"))   return "/icons/youtube.png";
+  return null;
+};
 ---
 
-<footer class="bg-light dark:bg-darkmode-light">
-  <div class="container">
-    <div
-      class="flex flex-col md:flex-row justify-between items-center py-10 md:pt-20 md:pb-14"
-    >
-      <Logo />
+<footer class="bg-[#0f1420] dark:bg-[#0f1420] text-gray-300 mt-16 border-t border-white/5">
+  <div class="container mx-auto px-4">
+    <!-- fila superior -->
+    <div class="py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <!-- Col 1 -->
+      <div>
+        <h3 class="text-white font-extrabold text-lg">Obba Web</h3>
+        <p class="mt-2 text-xs text-gray-400 max-w-sm">
+          Cursos de skate online. Aprende, progresa y conecta.
+        </p>
+      </div>
 
-      <ul class="flex gap-x-4 lg:gap-x-10 my-3">
-        {
-          menu.footer.map((menu) => (
-            <li class="footer-link">
-              <a href={menu.url}>{menu.name}</a>
-            </li>
-          ))
-        }
-      </ul>
+      <!-- Col 2 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Enlaces rápidos</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a class="hover:text-white" href="/products">Cursos</a></li>
+          <li><span class="text-gray-500"></span></li>
+          <li><span class="text-gray-500"></span></li>
+          <li><a class="hover:text-white" href="/contact">Contacto</a></li>
+          <li><a class="hover:text-white" href="#">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
 
-      {/* social share */}
-      <ul class="social-icons social-icons-footer">
-        {
-          social?.main.map((social: ISocial) => (
+      <!-- Col 3 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Síguenos</h4>
+        <ul class="flex items-center gap-3">
+          {socials.map((s) => (
             <li>
-              <a
-                aria-label={social.name}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-              >
-                <span class="sr-only">{social.name}</span>
-                <DynamicIcon className="inline-block" icon={social.icon} />
+              <a href={s.link} target="_blank" rel="noopener noreferrer nofollow" aria-label={s.name}
+                 class="inline-flex w-8 h-8 rounded-full ring-1 ring-white/10 overflow-hidden bg-white/5 hover:bg-white/10">
+                {iconSrc(s.name) ? (
+                  <img src={iconSrc(s.name)!} alt={s.name} class="w-full h-full object-contain p-1.5" />
+                ) : (
+                  <span class="sr-only">{s.name}</span>
+                )}
               </a>
             </li>
-          ))
-        }
-      </ul>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Col 4 -->
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Métodos de pago</h4>
+        <div class="flex items-center gap-3">
+          <!-- Logotipos reducidos; elimina el último (Stripe/otro) -->
+          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="h-4 opacity-90" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="h-4 opacity-90" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="h-4 opacity-90" />
+        </div>
+      </div>
     </div>
 
-    <div class="border-t border-border py-5 dark:border-darkmode-border">
-      <div
-        class="flex flex-col md:flex-row gap-y-2 justify-between items-center text-text-light dark:text-darkmode-text-light"
-      >
-        <ul class="flex gap-x-4">
-          {
-            menu.footerCopyright.map((menu) => (
-              <li class="footer-link">
-                <a href={menu.url}>{menu.name}</a>
-              </li>
-            ))
-          }
-        </ul>
+    <!-- fila inferior -->
+    <div class="py-4 border-t border-white/5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+      <p class="text-[11px] text-gray-400" set:html={markdownify(copyright)} />
+      <div class="w-full md:w-auto text-right">
 
-        <p class="text-sm font-light" set:html={markdownify(copyright)} />
       </div>
     </div>
   </div>

@@ -1,12 +1,12 @@
 import { atom, computed } from "nanostores";
 import Cookies from "js-cookie";
-import { getCart } from "@/lib/shopify";
+import { getCart } from "@/lib/woocommerce";
 import {
   addItem,
   removeItem,
   updateItemQuantity,
 } from "@/lib/utils/cartActions";
-import type { Cart } from "@/lib/shopify/types";
+import type { Cart } from "@/lib/woocommerce/types";
 
 // Atom to hold the cart state
 export const cart = atom<Cart | null>(null);

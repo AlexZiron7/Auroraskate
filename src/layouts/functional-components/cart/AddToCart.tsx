@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import type { ProductVariant } from "@/lib/shopify/types";
+import type { ProductVariant } from "@/lib/woocommerce/types";
 import { BiLoaderAlt } from "react-icons/bi";
 import { addItemToCart } from "@/cartStore";
 
@@ -53,7 +53,7 @@ function SubmitButton({
   return (
     <button
       onClick={onClick}
-      aria-label="Add to cart"
+      aria-label="Añadir al carrito"
       aria-disabled={pending ? "true" : "false"}
       className={`${buttonClasses}`}
     >
@@ -63,7 +63,7 @@ function SubmitButton({
           size={26}
         />
       ) : (
-        "Add To Cart"
+        "Añadir al carrito"
       )}
     </button>
   );

@@ -1,0 +1,48 @@
+---
+const currencies = [
+  { code: "USD", label: "USD $" },
+  { code: "EUR", label: "EUR €" },
+  { code: "MXN", label: "MXN $" },
+];
+
+const cookieName = "currency";
+const getCurrency = () => {
+  const fromCookie = Astro.cookies.get(cookieName)?.value;
+  if (fromCookie) return fromCookie;
+  return currencies[0].code;
+};
+const active = getCurrency();
+---
+
+<div class="relative">
+  <select
+    id="currency-menu"
+    class="appearance-none rounded-full border border-white/20 bg-black/30 px-3 py-1.5 text-xs text-white
+           hover:bg-white/10 outline-none
+           dark:border-white/20 dark:bg-white/10 dark:text-white"
+    value={active}
+  >
+    {currencies.map((c) => (
+      <option value={c.code}>{c.label}</option>
+    ))}
+  </select>
+</div>
+
+<script>
+  const sel = document.getElementById('currency-menu');
+  function setCookie(name, value, days = 365) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = `${name}=${value}; expires=${d.toUTCString()}; path=/; SameSite=Lax`;
+  }
+
+  sel?.addEventListener('change', (e) => {
+    const target = e.currentTarget || e.target;
+    const code = target?.value;
+    if (!code) return;
+    setCookie('currency', code);
+
+    // Evento personal para que otros componentes (precios / carrito) escuchen y actualicen
+    document.dispatchEvent(new CustomEvent('currency:changed', { detail: { code } }));
+  });
+</script>

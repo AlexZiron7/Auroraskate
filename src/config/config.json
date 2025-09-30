@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Shopplate",
-    "base_url": "https://shopplate.vercel.app/",
+    "title": "AuroraSkate",
+    "base_url": "https://auroraskate.vercel.app/",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
@@ -9,12 +9,12 @@
     "logo_darkmode": "/images/logo-darkmode.png",
     "logo_width": "150",
     "logo_height": "33",
-    "logo_text": "Shopplate"
+    "logo_text": "AuroraSkate"
   },
 
   "settings": {
-    "search": true,
-    "account": true,
+    "search": false,
+    "account": false,
     "sticky_header": true,
     "theme_switcher": true,
     "default_theme": "system"
@@ -22,26 +22,26 @@
 
   "params": {
     "contact_form_action": "#",
-    "copyright": "Designed And Developed by [Themefisher](https://themefisher.com/)"
+    "copyright": "Diseñado y Desarrollado por [Auroradevs](https://www.instagram.com/aurora_devs/?hl=es)"
   },
 
   "navigation_button": {
     "enable": true,
     "label": "Get Started",
-    "link": "https://github.com/themefisher/shopplate"
+    "link": "https://www.instagram.com/aurora_devs/?hl=es"
   },
 
   "metadata": {
-    "meta_author": "Themefisher",
+    "meta_author": "auroradevs",
     "meta_image": "/images/og-image.png",
     "meta_description": "Shopify Storefront Boilerplate"
   },
 
   "shopify": {
-    "currencySymbol": "৳",
-    "currencyCode": "BDT",
+    "currencySymbol": "€",
+    "currencyCode": "EUR",
     "collections": {
-      "hero_slider": "hidden-homepage-carousel",
+      "hero_slider": "AuroraSkate1",
       "featured_products": "featured-products"
     }
   }

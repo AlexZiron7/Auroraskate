@@ -1,58 +1,142 @@
 ---
-import FeaturedProducts from "@/components/FeaturedProducts.astro";
-import config from "@/config/config.json";
-import CollectionsSlider from "@/functional-components/CollectionsSlider";
 import Base from "@/layouts/Base.astro";
-import { getCollectionProducts, getCollections } from "@/lib/shopify";
-import CallToAction from "@/partials/CallToAction.astro";
-import HeroSlider from "src/layouts/functional-components/HeroSlider";
-
-const { collections } = config.shopify;
-
-// Fetch slider images for the HeroSlider
-const sliderImages = await getCollectionProducts({
-  collection: collections.hero_slider,
-});
-const heroProducts = sliderImages.products;
-
-const collectionProducts = await getCollections();
-
-// Fetch featured products
-const { products: featuredProducts } = await getCollectionProducts({
-  collection: collections.featured_products,
-  reverse: false,
-});
 ---
 
-<Base>
-  <section>
-    <div class="container">
-      <div class="bg-gradient py-10 rounded-md">
-        <HeroSlider products={heroProducts} client:load />
+<Base title="AuroEscape">
+  <head>
+    <link rel="prefetch" href="/products" />
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin />
+    <!-- Preload del video para mejorar la primera pintura -->
+    <link rel="preload" as="video" href="/videos/fondo.mp4" type="video/mp4" />
+  </head>
+
+  <!-- HERO con vídeo -->
+  <section class="relative min-h-screen flex items-center pt-16 text-white">
+    <video autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover -z-10">
+      <!-- ✅ NO usar /public/... en producción; Vercel sirve /public como / -->
+      <source src="/videos/fondo.mp4" type="video/mp4" />
+    </video>
+    <div class="absolute inset-0 bg-black/55 -z-10"></div>
+
+    <div class="relative z-10 mx-auto w-full max-w-5xl px-4 text-center">
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight tracking-tight text-white">
+        Aprende Skateboarding con los mejores cursos online
+      </h1>
+      <p class="mt-5 max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-white/85">
+        Programas en vídeo, revisiones personalizadas y una comunidad activa para llevar tus trucos al siguiente nivel.
+      </p>
+      <div class="mt-8 flex items-center justify-center gap-4">
+        <a href="/products" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white text-black font-semibold px-6 py-3 hover:opacity-90 transition">
+          Ver Cursos
+        </a>
+        <a href="/contact#discord" class="inline-flex items-center justify-center rounded-xl border border-white/40 text-white font-semibold px-6 py-3 hover:bg-white/10 transition">
+          Comunidad
+        </a>
       </div>
     </div>
   </section>
 
-  {/* category section */}
-  <section class="section">
-    <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2>Collections</h2>
+  <!-- BUNDLES -->
+  <section class="bg-white dark:bg-darkmode-body py-20 px-4">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-8 text-text-dark dark:text-darkmode-text-dark">Bundles destacados</h2>
+
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-2xl border shadow-sm overflow-hidden dark:border-darkmode-border dark:bg-darkmode-light">
+          <!-- ✅ ruta correcta desde /public -->
+          <img src="/images/skate-bundle01.png" alt="Ultimate Bundle" class="w-full h-64 object-cover" loading="lazy" decoding="async" />
+          <div class="p-5">
+            <h3 class="font-semibold text-text-dark dark:text-darkmode-text-dark">Ultimate Bundle</h3>
+            <p class="text-sm text-text-light dark:text-darkmode-text-light mt-1">Todo lo que necesitas para acelerar tu progreso.</p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border shadow-sm overflow-hidden dark:border-darkmode-border dark:bg-darkmode-light">
+          <img src="/images/skatebundle02.png" alt="Balance Blueprint Bundle" class="w-full h-64 object-cover" loading="lazy" decoding="async" />
+          <div class="p-5">
+            <h3 class="font-semibold text-text-dark dark:text-darkmode-text-dark">Balance Blueprint Bundle</h3>
+            <p class="text-sm text-text-light dark:text-darkmode-text-light mt-1">Mejora tu equilibrio y control de tabla.</p>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border shadow-sm overflow-hidden dark:border-darkmode-border dark:bg-darkmode-light">
+          <img src="/images/skatebundle03.png" alt="Art of Popping Bundle" class="w-full h-64 object-cover" loading="lazy" decoding="async" />
+          <div class="p-5">
+            <h3 class="font-semibold text-text-dark dark:text-darkmode-text-dark">Art of Popping Bundle</h3>
+            <p class="text-sm text-text-light dark:text-darkmode-text-light mt-1">Domina pops, timing y estilo.</p>
+          </div>
+        </div>
       </div>
-      <CollectionsSlider client:load collections={collectionProducts} />
     </div>
   </section>
 
-  {/* Featured Products section */}
-  <section>
-    <div class="container">
-      <div class="text-center mb-6 md:mb-14">
-        <h2 class="mb-2">Featured Products</h2>
-        <p class="md:h5">Explore Today's Featured Picks!</p>
+  <!-- TWO-COLUMN -->
+  <section class="bg-white dark:bg-darkmode-body py-16">
+    <div class="mx-auto max-w-6xl px-8 grid gap-12 lg:grid-cols-2">
+      <div class="dark:bg-darkmode-light rounded-2xl">
+        <!-- ✅ ruta correcta -->
+        <img src="/images/Acercademi.png" class="w-full h-[420px] rounded-2xl object-cover object-center" alt="Acerca de mí" loading="lazy" decoding="async" />
+
+        <div class="mt-6">
+          <h3 class="text-3xl font-extrabold text-text-dark dark:text-darkmode-text-dark text-center">ACERCA DE MÍ</h3>
+          <!-- ✅ descripción centrada -->
+          <p class="mt-2 text-text-light dark:text-darkmode-text-light text-center max-w-prose mx-auto">
+            Conoce quién está detrás de Obba y cómo te ayudaremos a progresar.
+          </p>
+          <!-- ✅ botón centrado -->
+          <div class="mt-4 flex justify-center mb-4">
+              <a href="/contact" class="inline-flex items-center rounded-full bg-emerald-600 text-white px-5 py-2 hover:bg-emerald-700">
+                  Contactar
+              </a>
+          </div>
+        </div>
       </div>
-      <FeaturedProducts products={featuredProducts} />
+
+      <div class="dark:bg-darkmode-light rounded-2xl">
+        <img src="/images/Jointheteam.png" class="w-full h-[420px] rounded-2xl object-cover object-center" alt="Join the team" loading="lazy" decoding="async" />
+
+        <div class="mt-6">
+          <h3 class="text-3xl font-extrabold text-text-dark dark:text-darkmode-text-dark text-center">ÚNETE AL EQUIPO</h3>
+          <p class="mt-2 text-text-light dark:text-darkmode-text-light text-center max-w-prose mx-auto">
+            Únete a una comunidad de skaters y recibe feedback semanal.
+          </p>
+          <div class="mt-4 flex justify-center mb-4">
+            <a href="/contact#discord" class="inline-flex items-center rounded-full bg-emerald-600 text-white px-5 py-2 hover:bg-emerald-700">
+              Comunidad
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <CallToAction />
+  <!-- WHY CHOOSE -->
+  <section id="beneficios" class="bg-white dark:bg-darkmode-body text-gray-900 dark:text-darkmode-text-dark py-20">
+    <div class="mx-auto max-w-6xl px-4 text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold">¿Por qué elegir a Obba?</h2>
+      <p class="mt-4 max-w-2xl mx-auto text-lg text-text-light dark:text-darkmode-text-light">
+        La forma más completa de aprender skate: práctica, teoría y comunidad en un solo lugar.
+      </p>
+
+      <div class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🛹</div>
+          <h3 class="font-semibold text-lg">Aprendizaje progresivo</h3>
+          <p class="mt-2 text-text-light dark:text-darkmode-text-light text-sm">Cursos para cada nivel, desde tu primera tabla hasta trucos de competición.</p>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🎥</div>
+          <h3 class="font-semibold text-lg">Feedback en vídeo</h3>
+          <p class="mt-2 text-text-light dark:text-darkmode-text-light text-sm">Sube tus sesiones y recibe análisis de expertos.</p>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="h-12 w-12 flex items-center justify-center rounded-full bg-emerald-600 text-white mb-4">🌍</div>
+          <h3 class="font-semibold text-lg">Comunidad global</h3>
+          <p class="mt-2 text-text-light dark:text-darkmode-text-light text-sm">Conecta con riders y comparte progreso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
