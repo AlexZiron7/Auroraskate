@@ -1,5 +1,5 @@
 import { layoutView } from '@/cartStore';
-import type { PageInfo, Product } from '@/lib/shopify/types';
+import type { PageInfo, Product } from '@/lib/woocommerce/types';
 import { useStore } from '@nanostores/react';
 import React, { Suspense, lazy } from 'react';
 import SkeletonCards from './loadings/skeleton/SkeletonCards';

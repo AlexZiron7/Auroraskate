@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/**)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(find:*)",
+      "Bash(for:*)",
+      "Bash(do sed -i 's/@\\/lib\\/shopify/@\\/lib\\/woocommerce/g' \"$file\")",
+      "Bash(done)",
+      "Bash(curl -u \"ck_b91dd160c62091774435c8fbeff784ec2c1e32b2:cs_b3f75639aff2d52ac3c6a2e48893dc05658f5a4e\" \"http://auroraskate.page.gd/wp-json/wc/v3/products\" -v)",
+      "Bash(curl \"http://auroraskate.page.gd/wp-json/wc/v3/products?consumer_key=ck_b91dd160c62091774435c8fbeff784ec2c1e32b2&consumer_secret=cs_b3f75639aff2d52ac3c6a2e48893dc05658f5a4e\")",
+      "Bash(curl \"http://auroraskate.page.gd/wp-json/wc/v3/\")",
+      "Bash(curl -u \"ck_0551d15e02033b911fb3e5ccfab9a31b8a729076:cs_29164bf9a5e728483708ec6069a4ad8d37e129ae\" \"http://auroraskate.page.gd/wp-json/wc/v3/products\")",
+      "Bash(curl -u \"ck_0551d15e02033b911fb3e5ccfab9a31b8a729076:cs_29164bf9a5e728483708ec6069a4ad8d37e129ae\" \"http://auroraskate.page.gd/wp-json/wc/v3/products\" -v)",
+      "Bash(curl -u \"ck_0551d15e02033b911fb3e5ccfab9a31b8a729076:cs_29164bf9a5e728483708ec6069a4ad8d37e129ae\" \"http://auroraskate.page.gd/wp-json/wc/v3/products?per_page=1\")",
+      "Bash(npm run build:*)",
+      "Bash(curl \"http://auroraskate.page.gd/wp-json/wc/v3/products?per_page=1&consumer_key=ck_0551d15e02033b911fb3e5ccfab9a31b8a729076&consumer_secret=cs_29164bf9a5e728483708ec6069a4ad8d37e129ae\")",
+      "Bash(curl \"http://auroraskate.page.gd/wp-json/wc/store/v1/products?per_page=1\")",
+      "Bash(curl \"http://auroraskate.page.gd/wp-json/wc/store/v1/products/categories\")",
+      "Bash(node:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,4 +1,4 @@
-export interface ShopifyErrorLike {
+export interface WooCommerceErrorLike {
   status: number;
   message: Error;
   cause?: Error;
@@ -12,13 +12,17 @@ export const isObject = (
   );
 };
 
-export const isShopifyError = (error: unknown): error is ShopifyErrorLike => {
+export const isWooCommerceError = (error: unknown): error is WooCommerceErrorLike => {
   if (!isObject(error)) return false;
 
   if (error instanceof Error) return true;
 
   return findError(error);
 };
+
+// Backwards compatibility
+export const isShopifyError = isWooCommerceError;
+export type ShopifyErrorLike = WooCommerceErrorLike;
 
 function findError<T extends object>(error: T): boolean {
   if (Object.prototype.toString.call(error) === "[object Error]") {

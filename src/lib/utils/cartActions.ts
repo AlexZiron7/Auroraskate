@@ -5,20 +5,13 @@ import {
   getCart,
   removeFromCart,
   updateCart,
-} from "@/lib/shopify";
+} from "@/lib/woocommerce";
 
 export async function addItem(selectedVariantId: string | undefined) {
-  let cartId = Cookies.get("cartId");
-  let cart;
+  let cart = await getCart();
 
-  if (cartId) {
-    cart = await getCart(cartId);
-  }
-
-  if (!cartId || !cart) {
+  if (!cart) {
     cart = await createCart();
-    cartId = cart.id;
-    Cookies.set("cartId", cartId);
   }
 
   if (!selectedVariantId) {
@@ -26,26 +19,23 @@ export async function addItem(selectedVariantId: string | undefined) {
   }
 
   try {
-    await addToCart(cartId, [
-      { merchandiseId: selectedVariantId, quantity: 1 },
-    ]);
-    // return (window.location.href = "/");
+    // Parse variant ID - format: "productId" or "productId-variationId"
+    const parts = selectedVariantId.split('-');
+    const productId = parseInt(parts[0]);
+    const variationId = parts.length > 1 ? parseInt(parts[1]) : undefined;
+
+    await addToCart(productId, 1, variationId);
   } catch (e) {
+    console.error("Error adding item to cart:", e);
     return "Error adding item to cart";
   }
 }
 
-export async function removeItem(lineId: string) {
-  const cartId = Cookies.get("cartId");
-
-  if (!cartId) {
-    return "Missing cart ID";
-  }
-
+export async function removeItem(itemKey: string) {
   try {
-    await removeFromCart(cartId, [lineId]);
-    // return (window.location.href = "/");
+    await removeFromCart(itemKey);
   } catch (e) {
+    console.error("Error removing item from cart:", e);
     return "Error removing item from cart";
   }
 }
@@ -55,29 +45,17 @@ export async function updateItemQuantity(payload: {
   variantId: string;
   quantity: number;
 }) {
-  const cartId = Cookies.get("cartId");
-
-  if (!cartId) {
-    return "Missing cart ID";
-  }
-
-  const { lineId, variantId, quantity } = payload;
+  const { lineId, quantity } = payload;
 
   try {
     if (quantity === 0) {
-      await removeFromCart(cartId, [lineId]);
-      // return (window.location.href = "/");
+      await removeFromCart(lineId);
+      return;
     }
 
-    await updateCart(cartId, [
-      {
-        id: lineId,
-        merchandiseId: variantId,
-        quantity,
-      },
-    ]);
-    // return (window.location.href = "/");
+    await updateCart(lineId, quantity);
   } catch (e) {
+    console.error("Error updating item quantity:", e);
     return "Error updating item quantity";
   }
 }

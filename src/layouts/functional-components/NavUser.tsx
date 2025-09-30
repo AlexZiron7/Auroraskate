@@ -1,5 +1,5 @@
-import { getUserDetails } from "@/lib/shopify";
-import type { user } from "@/lib/shopify/types";
+import { getUserDetails } from "@/lib/woocommerce";
+import type { user } from "@/lib/woocommerce/types";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import Gravatar from "react-gravatar";

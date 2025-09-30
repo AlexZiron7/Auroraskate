@@ -1,6 +1,6 @@
 import config from "@/config/config.json";
 import { defaultSort, sorting } from "@/lib/constants";
-import type { PageInfo, Product } from "@/lib/shopify/types";
+import type { PageInfo, Product } from "@/lib/woocommerce/types";
 import React, { useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { AddToCart } from "./cart/AddToCart";

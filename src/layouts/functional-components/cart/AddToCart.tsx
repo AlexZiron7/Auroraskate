@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import type { ProductVariant } from "@/lib/shopify/types";
+import type { ProductVariant } from "@/lib/woocommerce/types";
 import { BiLoaderAlt } from "react-icons/bi";
 import { addItemToCart } from "@/cartStore";
 

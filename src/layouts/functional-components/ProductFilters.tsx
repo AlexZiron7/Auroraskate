@@ -1,4 +1,4 @@
-import type { ShopifyCollection } from "@/lib/shopify/types";
+import type { ShopifyCollection } from "@/lib/woocommerce/types";
 import { slugify } from "@/lib/utils/textConverter";
 import React, { useState } from "react";
 import { BsCheckLg } from "react-icons/bs";

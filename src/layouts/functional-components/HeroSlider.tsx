@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/shopify/types";
+import type { Product } from "@/lib/woocommerce/types";
 import React from "react";
 import "swiper/css";
 import "swiper/css/pagination";

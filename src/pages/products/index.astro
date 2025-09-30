@@ -10,8 +10,8 @@ import {
   getHighestProductPrice,
   getProducts,
   getVendors,
-} from "@/lib/shopify";
-import type { PageInfo, Product } from "@/lib/shopify/types";
+} from "@/lib/woocommerce";
+import type { PageInfo, Product } from "@/lib/woocommerce/types";
 import CallToAction from "@/partials/CallToAction.astro";
 
 const searchParams = Astro.url.searchParams;
@@ -87,9 +87,9 @@ if (searchValue || brand || minPrice || maxPrice || category || tag) {
     ...new Set(
       ((productsData?.products as Product[]) || []).flatMap(
         (product: Product) =>
-          product.collections.nodes.map(
-            (collectionNode: any) => collectionNode.title || ""
-          )
+          product.collections?.map(
+            (collection: any) => collection.name || ""
+          ) || []
       )
     ),
   ];
@@ -104,8 +104,8 @@ if (searchValue || brand || minPrice || maxPrice || category || tag) {
   categoriesWithCounts = uniqueCategories.map((category: string) => {
     const productCount = ((productsData?.products as Product[]) || []).filter(
       (product: Product) =>
-        product.collections.nodes.some(
-          (collectionNode: any) => collectionNode.title === category
+        product.collections?.some(
+          (collection: any) => collection.name === category
         )
     ).length;
     return { category, productCount };
@@ -124,18 +124,11 @@ if (searchValue || brand || minPrice || maxPrice || category || tag) {
   }
 }
 
-const categories = await getCollections();
-const vendors = await getVendors({});
-
-const tags = [
-  ...new Set(
-    (
-      productsData as { pageInfo: PageInfo; products: Product[] }
-    )?.products.flatMap((product: Product) => product.tags)
-  ),
-];
-
-const maxPriceData = await getHighestProductPrice();
+// Simplified - only essential data
+const categories: any[] = [];
+const vendors: any[] = [];
+const tags: any[] = [];
+const maxPriceData = null;
 
 const initialProducts = productsData.products;
 const initialPageInfo = productsData.pageInfo;

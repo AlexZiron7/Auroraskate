@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsCheckLg } from "react-icons/bs";
 import VariantDropDown from "./VariantDropDown";
 import type { ImageItem } from "./ProductGallery";
-import type { ProductOption, ProductVariant } from "@/lib/shopify/types";
+import type { ProductOption, ProductVariant } from "@/lib/woocommerce/types";
 
 type Combination = {
   id: string;

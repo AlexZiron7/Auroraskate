@@ -8,7 +8,7 @@ import Tabs from "@/functional-components/product/Tabs";
 import { VariantSelector } from "@/functional-components/product/VariantSelector";
 import SocialShare from "@/functional-components/SocialShare";
 import Base from "@/layouts/Base.astro";
-import { getProduct, getProductRecommendations } from "@/lib/shopify";
+import { getProduct, getProductRecommendations } from "@/lib/woocommerce";
 import type { CollectionEntry } from "astro:content";
 import { getEntry } from "astro:content";
 
@@ -38,7 +38,7 @@ const {
   tags,
 } = product;
 
-const relatedProducts = await getProductRecommendations(id);
+const relatedProducts = await getProductRecommendations(typeof id === 'string' ? parseInt(id) : id);
 const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
 
 const { currencySymbol } = config.shopify;

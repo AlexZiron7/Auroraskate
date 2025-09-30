@@ -1,17 +1,23 @@
 import type { APIRoute } from "astro";
-import { getProducts } from "@/lib/shopify";
+import { getProducts } from "@/lib/woocommerce";
 
 export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
-  const cursor = url.searchParams.get("cursor");
-  const sortKey = url.searchParams.get("sortKey") as string;
-  const reverse = url.searchParams.get("reverse") === "true";
+  const page = parseInt(url.searchParams.get("page") || "1");
+  const per_page = parseInt(url.searchParams.get("per_page") || "20");
+  const sortKey = url.searchParams.get("sortKey") || "date";
+  const order = url.searchParams.get("reverse") === "true" ? "desc" : "asc";
+  const search = url.searchParams.get("search") || "";
+  const category = url.searchParams.get("category") || "";
 
   try {
     const { products, pageInfo } = await getProducts({
-      sortKey,
-      reverse,
-      cursor: cursor || undefined,
+      page,
+      per_page,
+      orderby: sortKey,
+      order,
+      search,
+      category,
     });
 
     return new Response(JSON.stringify({ products, pageInfo }), {
